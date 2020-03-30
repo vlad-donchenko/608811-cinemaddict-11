@@ -1,7 +1,7 @@
 # Личный проект «Киноман» [![Build status][travis-image]][travis-url]
 
 * Студент: [Vladyslav Donchenko](https://up.htmlacademy.ru/ecmascript/11/user/608811).
-* Наставник: `Неизвестно`.
+* Наставник: `Студент без наставника`.
 
 ---
 
