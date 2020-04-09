@@ -1,7 +1,6 @@
 import {getUserRankTitle} from "../utils";
 
 const createUserRankTemplate = (rank) => {
-  console.log(rank);
   const title = getUserRankTitle(rank);
   return (
     `<section class="header__profile profile">
