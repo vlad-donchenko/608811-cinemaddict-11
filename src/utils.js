@@ -4,6 +4,13 @@ const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
 };
 
+const createElement = (template) => {
+  const newElement = document.createElement(`div`);
+  newElement.innerHTML = template;
+
+  return newElement.firstChild;
+};
+
 const getTopRatingMovies = (movies) => {
   return movies.sort((a, b) => {
     return b.rating - a.rating;
@@ -87,4 +94,4 @@ const getUserRankTitle = (rank) => {
   return rankTitle;
 };
 
-export {render, getTopRatingMovies, randomInteger, getRandomArrayItem, getCommentTitles, formatFilmDuration, getMostCommentedFilms, convertsArrayToString, getCurrentComment, formatReleaseDate, formatCommentDate, getUserRankTitle};
+export {render, createElement, getTopRatingMovies, randomInteger, getRandomArrayItem, getCommentTitles, formatFilmDuration, getMostCommentedFilms, convertsArrayToString, getCurrentComment, formatReleaseDate, formatCommentDate, getUserRankTitle};

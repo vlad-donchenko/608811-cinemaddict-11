@@ -1,4 +1,11 @@
-import {getCurrentComment, convertsArrayToString, formatFilmDuration, formatReleaseDate, formatCommentDate} from "../utils";
+import {
+  getCurrentComment,
+  convertsArrayToString,
+  formatFilmDuration,
+  formatReleaseDate,
+  formatCommentDate,
+  createElement
+} from "../utils";
 import {comments} from "../mock/comment";
 
 const createGenreMarkUp = (genres) => {
@@ -174,4 +181,25 @@ const createFilmPopupTemplate = (movie) => {
   );
 };
 
-export {createFilmPopupTemplate};
+class FilmPopup {
+  constructor(movie) {
+    this._movie = movie;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createFilmPopupTemplate(this._movie);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
+
+export default FilmPopup;

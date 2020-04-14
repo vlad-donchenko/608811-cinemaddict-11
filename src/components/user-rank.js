@@ -1,4 +1,4 @@
-import {getUserRankTitle} from "../utils";
+import {createElement, getUserRankTitle} from "../utils";
 
 const createUserRankTemplate = (rank) => {
   const title = getUserRankTitle(rank);
@@ -10,4 +10,27 @@ const createUserRankTemplate = (rank) => {
   );
 };
 
-export {createUserRankTemplate};
+class UserRank {
+  constructor(rank) {
+    this._rank = rank;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createUserRankTemplate(this._rank);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
+
+export default UserRank;

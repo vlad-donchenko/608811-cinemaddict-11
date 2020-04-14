@@ -1,3 +1,5 @@
+import {createElement} from "../utils";
+
 const creteFilterMarkup = (menuItem, activeMenuItem) => {
   const {title, count} = menuItem;
   const activeFilterClass = menuItem === activeMenuItem ? `main-navigation__item--active` : ``;
@@ -23,4 +25,26 @@ const createMenuTemplate = (menu) => {
   );
 };
 
-export {createMenuTemplate};
+class Filter {
+  constructor(menuItem, activeMenuItem) {
+    this._activeMenuItem = activeMenuItem;
+    this._menuItem = menuItem;
+    this._element = null;
+  }
+
+  getElement() {
+    return createMenuTemplate(this._menuItem, this._activeMenuItem);
+  }
+
+  getTemplate() {
+    if (!this._element) {
+      this._element = createElement(this.getElement());
+    }
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
+
+export default Filter;
