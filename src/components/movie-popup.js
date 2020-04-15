@@ -1,4 +1,11 @@
-import {getCurrentComment, convertsArrayToString, formatFilmDuration, formatReleaseDate, formatCommentDate} from "../utils";
+import {
+  getCurrentComment,
+  convertsArrayToString,
+  formatFilmDuration,
+  formatReleaseDate,
+  formatCommentDate,
+  createElement
+} from "../utils";
 import {comments} from "../mock/comment";
 
 const createGenreMarkUp = (genres) => {
@@ -54,7 +61,7 @@ const createFilmPopupTemplate = (movie) => {
   const isAlreadyWatched = alreadyWatched ? `checked` : ``;
 
   return (
-    `<section class="film-details" style="display: none;">
+    `<section class="film-details">
       <form class="film-details__inner" action="" method="get">
         <div class="form-details__top-container">
           <div class="film-details__close">
@@ -174,4 +181,27 @@ const createFilmPopupTemplate = (movie) => {
   );
 };
 
-export {createFilmPopupTemplate};
+class MoviePopup {
+  constructor(movie) {
+    this._movie = movie;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createFilmPopupTemplate(this._movie);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
+
+export default MoviePopup;

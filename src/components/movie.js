@@ -1,5 +1,5 @@
 import {MAX_MOVIE_CARD_DESCRIPTION_LENGTH} from "../const";
-import {getCommentTitles, formatFilmDuration} from "../utils";
+import {getCommentTitles, formatFilmDuration, createElement} from "../utils";
 
 const createMovieTemplate = (movie) => {
   const {title, poster, description, rating, comments, genre, runtime, userDetails, release} = movie;
@@ -36,4 +36,27 @@ const createMovieTemplate = (movie) => {
   );
 };
 
-export {createMovieTemplate};
+class Movie {
+  constructor(movie) {
+    this._movie = movie;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createMovieTemplate(this._movie);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
+
+export default Movie;
