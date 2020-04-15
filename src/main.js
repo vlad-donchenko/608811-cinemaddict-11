@@ -18,7 +18,22 @@ import {getMenu} from "./mock/filter";
 const renderMovie = (movieListElement, movie) => {
   const bodyElement = document.querySelector(`body`);
 
-  const onClosePopupCLick = (evt) => {
+  const closePopup = () => {
+    document.removeEventListener(`keydown`, onClosePopupCloseKeyPress);
+    filmPopupComponent.getElement().remove();
+    filmPopupComponent.removeElement();
+  };
+
+  const onClosePopupCloseKeyPress = (evt) => {
+    const isEsc = evt.key === `Escape` || evt.key === `Esc`;
+
+    if (isEsc) {
+      closePopup();
+      document.removeEventListener(`keydown`, onClosePopupCloseKeyPress);
+    }
+  };
+
+  const onClosePopupClick = (evt) => {
     evt.preventDefault();
     closePopup();
   };
@@ -29,12 +44,8 @@ const renderMovie = (movieListElement, movie) => {
     render(bodyElement, filmPopupComponent.getElement(), RenderPosition.BEFORE_END);
     const closeButtonElement = filmPopupComponent.getElement().querySelector(`.film-details__close-btn`);
 
-    closeButtonElement.addEventListener(`click`, onClosePopupCLick);
-  };
-
-  const closePopup = () => {
-    filmPopupComponent.getElement().remove();
-    filmPopupComponent.removeElement();
+    closeButtonElement.addEventListener(`click`, onClosePopupClick);
+    document.addEventListener(`keydown`, onClosePopupCloseKeyPress);
   };
 
   const movieComponent = new MovieComponent(movie);
