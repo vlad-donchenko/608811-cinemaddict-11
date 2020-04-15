@@ -9,12 +9,13 @@ const createFilmExtraTemplate = (title) => {
 };
 
 class FilmExtra {
-  constructor() {
+  constructor(title) {
+    this._title = title;
     this._element = null;
   }
 
   getTemplate() {
-    return createFilmExtraTemplate();
+    return createFilmExtraTemplate(this._title);
   }
 
   getElement() {

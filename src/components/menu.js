@@ -25,21 +25,22 @@ const createMenuTemplate = (menu) => {
   );
 };
 
-class Filter {
-  constructor(menuItem, activeMenuItem) {
-    this._activeMenuItem = activeMenuItem;
-    this._menuItem = menuItem;
+class Menu {
+  constructor(menu) {
+    this._menu = menu;
     this._element = null;
   }
 
-  getElement() {
-    return createMenuTemplate(this._menuItem, this._activeMenuItem);
+  getTemplate() {
+    return createMenuTemplate(this._menu);
   }
 
-  getTemplate() {
+  getElement() {
     if (!this._element) {
-      this._element = createElement(this.getElement());
+      this._element = createElement(this.getTemplate());
     }
+
+    return this._element;
   }
 
   removeElement() {
@@ -47,4 +48,4 @@ class Filter {
   }
 }
 
-export default Filter;
+export default Menu;

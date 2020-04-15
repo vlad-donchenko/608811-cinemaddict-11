@@ -11,12 +11,13 @@ const createFooterStatisticsTemplate = (moviesCount) => {
 };
 
 class FooterStatistics {
-  constructor() {
+  constructor(moviesCount) {
+    this._moviesCount = moviesCount;
     this._element = null;
   }
 
   getTemplate() {
-    return createFooterStatisticsTemplate();
+    return createFooterStatisticsTemplate(this._moviesCount);
   }
 
   getElement() {
