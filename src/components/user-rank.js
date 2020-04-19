@@ -1,4 +1,5 @@
-import {createElement, getUserRankTitle} from "../utils";
+import AbstractComponent from "./AbstractComponent";
+import {getUserRankTitle} from "../utils";
 
 const createUserRankTemplate = (rank) => {
   const title = getUserRankTitle(rank);
@@ -10,26 +11,14 @@ const createUserRankTemplate = (rank) => {
   );
 };
 
-class UserRank {
+class UserRank extends AbstractComponent {
   constructor(rank) {
+    super();
     this._rank = rank;
-    this._element = null;
   }
 
   getTemplate() {
     return createUserRankTemplate(this._rank);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
 

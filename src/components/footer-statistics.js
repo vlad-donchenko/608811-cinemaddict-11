@@ -1,4 +1,4 @@
-import {createElement} from "../utils";
+import AbstractComponent from "./AbstractComponent";
 
 const createFooterStatisticsTemplate = (moviesCount) => {
   const statisticsTitle = moviesCount !== 0 ? `${moviesCount} movies inside` : `0 movies inside`;
@@ -10,26 +10,14 @@ const createFooterStatisticsTemplate = (moviesCount) => {
   );
 };
 
-class FooterStatistics {
+class FooterStatistics extends AbstractComponent {
   constructor(moviesCount) {
+    super();
     this._moviesCount = moviesCount;
-    this._element = null;
   }
 
   getTemplate() {
     return createFooterStatisticsTemplate(this._moviesCount);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
 
