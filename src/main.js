@@ -61,8 +61,9 @@ const renderMovie = (movieListElement, movie) => {
 const renderExtraMovie = (movieMainComponent, movies, title) => {
   const filmExtraComponent = new FilmExtraComponent(title);
   render(movieMainComponent.getElement(), filmExtraComponent, RenderPosition.BEFORE_END);
-  render(filmExtraComponent.getElement(), new MovieContainerComponent(), RenderPosition.BEFORE_END);
-  const movieExtraContainer = filmExtraComponent.getElement().querySelector(`.films-list__container`);
+  const movieContainerComponent = new MovieContainerComponent();
+  render(filmExtraComponent.getElement(), movieContainerComponent, RenderPosition.BEFORE_END);
+  const movieExtraContainer = movieContainerComponent.getElement();
 
   movies.forEach((movie) => {
     renderMovie(movieExtraContainer, movie);
@@ -75,13 +76,15 @@ const renderMovieMain = (movieMainComponent, movies) => {
     return;
   }
 
-  render(movieMainComponent.getElement(), new MovieListComponent(), RenderPosition.BEFORE_END);
+  const movieListComponent = new MovieListComponent();
+  render(movieMainComponent.getElement(), movieListComponent, RenderPosition.BEFORE_END);
 
-  const movieListElement = movieMainComponent.getElement().querySelector(`.films-list`);
-  render(movieListElement, new MovieContainerComponent(), RenderPosition.BEFORE_END);
+  const movieListElement = movieListComponent.getElement();
+  const movieContainerComponent = new MovieContainerComponent();
+  render(movieListElement, movieContainerComponent, RenderPosition.BEFORE_END);
 
   let showMovieStart = MOVIE_SHOW_START;
-  const movieListContainerElement = movieMainComponent.getElement().querySelector(`.films-list__container`);
+  const movieListContainerElement = movieContainerComponent.getElement();
 
   movies.slice(0, showMovieStart).forEach((movie) => {
     renderMovie(movieListContainerElement, movie);
