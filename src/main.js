@@ -42,20 +42,16 @@ const renderMovie = (movieListElement, movie) => {
     evt.preventDefault();
 
     render(bodyElement, filmPopupComponent, RenderPosition.BEFORE_END);
-    const closeButtonElement = filmPopupComponent.getElement().querySelector(`.film-details__close-btn`);
 
-    closeButtonElement.addEventListener(`click`, onClosePopupClick);
+    filmPopupComponent.setCloseButtonClickHandler(onClosePopupClick);
     document.addEventListener(`keydown`, onClosePopupCloseKeyPress);
   };
 
   const movieComponent = new MovieComponent(movie);
-  const titleElement = movieComponent.getElement().querySelector(`.film-card__title`);
-  const posterElement = movieComponent.getElement().querySelector(`.film-card__poster`);
-  const commentLinkElement = movieComponent.getElement().querySelector(`.film-card__comments`);
 
-  titleElement.addEventListener(`click`, onOpenPopup);
-  posterElement.addEventListener(`click`, onOpenPopup);
-  commentLinkElement.addEventListener(`click`, onOpenPopup);
+  movieComponent.setTitleClickHandler(onOpenPopup);
+  movieComponent.setPosterClickHandler(onOpenPopup);
+  movieComponent.setCommentClickHandler(onOpenPopup);
 
   const filmPopupComponent = new MoviePopupComponent(movie);
 
@@ -94,7 +90,7 @@ const renderMovieMain = (movieMainComponent, movies) => {
   const showMoreButtonComponent = new ShowMoreButtonComponent();
   render(movieListElement, showMoreButtonComponent, RenderPosition.BEFORE_END);
 
-  showMoreButtonComponent.getElement().addEventListener(`click`, () => {
+  showMoreButtonComponent.setClickHandler(() => {
     const prevMovieShowCount = showMovieStart;
     showMovieStart = showMovieStart + SHOWING_MOVIE_COUNT_BY_BUTTON;
 

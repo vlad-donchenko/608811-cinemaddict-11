@@ -1,5 +1,11 @@
 import AbstractComponent from "./AbstractComponent";
-import {getCurrentComment, convertsArrayToString, formatFilmDuration, formatReleaseDate, formatCommentDate,} from "../utils/common";
+import {
+  getCurrentComment,
+  convertsArrayToString,
+  formatFilmDuration,
+  formatReleaseDate,
+  formatCommentDate,
+} from "../utils/common";
 import {comments} from "../mock/comment";
 
 const createGenreMarkUp = (genres) => {
@@ -183,6 +189,10 @@ class MoviePopup extends AbstractComponent {
 
   getTemplate() {
     return createFilmPopupTemplate(this._movie);
+  }
+
+  setCloseButtonClickHandler(handler) {
+    this.getElement().querySelector(`.film-details__close-btn`).addEventListener(`click`, handler);
   }
 }
 
