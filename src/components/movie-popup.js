@@ -1,5 +1,5 @@
 import AbstractComponent from "./AbstractComponent";
-import {getCurrentComment, convertsArrayToString, formatFilmDuration, formatReleaseDate, formatCommentDate,} from "../utils";
+import {getCurrentComment, convertsArrayToString, formatFilmDuration, formatReleaseDate, formatCommentDate,} from "../utils/common";
 import {comments} from "../mock/comment";
 
 const createGenreMarkUp = (genres) => {

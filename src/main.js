@@ -1,5 +1,5 @@
 import {MOVIE_COUNT, MOVIE_SHOW_START, SHOWING_MOVIE_COUNT_BY_BUTTON, ExtraMovieTitle} from "./const";
-import {RenderPosition, render, getTopRatingMovies, getMostCommentedFilms} from "./utils";
+import {getTopRatingMovies, getMostCommentedFilms} from "./utils/common";
 import FilmExtraComponent from "./components/film-extra";
 import MenuComponent from "./components/menu";
 import MovieComponent from "./components/movie";
@@ -14,6 +14,7 @@ import FooterStatisticsComponent from "./components/footer-statistics";
 import NoDataComponent from "./components/no-data";
 import {getMovies} from "./mock/movie";
 import {getMenu} from "./mock/filter";
+import {render, RenderPosition} from "./utils/render";
 
 const renderMovie = (movieListElement, movie) => {
   const bodyElement = document.querySelector(`body`);
