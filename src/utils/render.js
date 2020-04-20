@@ -3,7 +3,6 @@ const RenderPosition = {
   BEFORE_END: `beforeend`
 };
 const render = (container, component, place) => {
-  console.log(component);
   switch (place) {
     case RenderPosition.AFTER_BEGIN:
       container.prepend(component.getElement());
