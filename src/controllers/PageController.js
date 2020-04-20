@@ -69,34 +69,36 @@ const renderExtraMovie = (movieMainComponent, movies, title) => {
 class PageController {
   constructor(container) {
     this._container = container;
+
+    this._movieContainerComponent = new MovieContainerComponent();
+    this._showMoreButtonComponent = new ShowMoreButtonComponent();
+    this._movieListComponent = new MovieListComponent();
+    this._noDataComponent = new NoDataComponent();
   }
 
   render(movies) {
     const container = this._container.getElement();
 
     if (movies.length === 0) {
-      render(container, new NoDataComponent(), RenderPosition.BEFORE_END);
+      render(container, this._noDataComponent, RenderPosition.BEFORE_END);
       return;
     }
 
-    const movieListComponent = new MovieListComponent();
-    render(container, movieListComponent, RenderPosition.BEFORE_END);
+    render(container, this._movieListComponent, RenderPosition.BEFORE_END);
 
-    const movieListElement = movieListComponent.getElement();
-    const movieContainerComponent = new MovieContainerComponent();
-    render(movieListElement, movieContainerComponent, RenderPosition.BEFORE_END);
+    const movieListElement = this._movieListComponent.getElement();
+    render(movieListElement, this._movieContainerComponent, RenderPosition.BEFORE_END);
 
     let showMovieStart = MOVIE_SHOW_START;
-    const movieListContainerElement = movieContainerComponent.getElement();
+    const movieListContainerElement = this._movieContainerComponent.getElement();
 
     movies.slice(0, showMovieStart).forEach((movie) => {
       renderMovie(movieListContainerElement, movie);
     });
 
-    const showMoreButtonComponent = new ShowMoreButtonComponent();
-    render(movieListElement, showMoreButtonComponent, RenderPosition.BEFORE_END);
+    render(movieListElement, this._showMoreButtonComponent, RenderPosition.BEFORE_END);
 
-    showMoreButtonComponent.setClickHandler(() => {
+    this._showMoreButtonComponent.setClickHandler(() => {
       const prevMovieShowCount = showMovieStart;
       showMovieStart = showMovieStart + SHOWING_MOVIE_COUNT_BY_BUTTON;
 
@@ -105,7 +107,7 @@ class PageController {
       });
 
       if (showMovieStart >= movies.length) {
-        remove(showMoreButtonComponent);
+        remove(this._showMoreButtonComponent);
       }
     });
 
