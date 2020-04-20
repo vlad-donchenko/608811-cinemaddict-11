@@ -123,7 +123,6 @@ class PageController {
       render(movieListElement, this._showMoreButtonComponent, RenderPosition.BEFORE_END);
 
       this._showMoreButtonComponent.setClickHandler(() => {
-        console.log(`was click`);
         const prevMovieShowCount = showMovieCount;
         showMovieCount = showMovieCount + SHOWING_MOVIE_COUNT_BY_BUTTON;
         const sortedMovies = getSortedMovies(this._sortComponent.getSortType(), movies, prevMovieShowCount, showMovieCount);
