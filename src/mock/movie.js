@@ -80,7 +80,7 @@ const getMovie = () => {
     writers: [`Takeshi Kitano`, `Anne Wigton`, `Heinz Herald`, `Richard Weil`],
     actors: [`Erich von Stroheim`, `Mary Beth Hughes`, `Dan Duryea`, `Morgan Freeman`],
     release: {
-      date: 1475924187819,
+      date: +(new Date()) - Math.random() * 10 * 31536000000,
       releaseCountry: getRandomArrayItem(countries),
     },
     runtime: randomInteger(77, 180),

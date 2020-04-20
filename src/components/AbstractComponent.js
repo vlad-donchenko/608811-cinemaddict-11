@@ -14,11 +14,11 @@ class AbstractComponent {
   }
 
   getElement() {
-    if (!this._elemen) {
-      this._elemen = createElement(this.getTemplate());
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
     }
 
-    return this._elemen;
+    return this._element;
   }
 
   removeElement() {
