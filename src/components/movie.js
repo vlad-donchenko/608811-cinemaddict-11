@@ -1,5 +1,6 @@
 import {MAX_MOVIE_CARD_DESCRIPTION_LENGTH} from "../const";
-import {getCommentTitles, formatFilmDuration, createElement} from "../utils";
+import AbstractComponent from "./AbstractComponent";
+import {getCommentTitles, formatFilmDuration} from "../utils/common";
 
 const createMovieTemplate = (movie) => {
   const {title, poster, description, rating, comments, genre, runtime, userDetails, release} = movie;
@@ -36,26 +37,26 @@ const createMovieTemplate = (movie) => {
   );
 };
 
-class Movie {
+class Movie extends AbstractComponent {
   constructor(movie) {
+    super();
     this._movie = movie;
-    this._element = null;
   }
 
   getTemplate() {
     return createMovieTemplate(this._movie);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
+  setTitleClickHandler(handler) {
+    this.getElement().querySelector(`.film-card__title`).addEventListener(`click`, handler);
   }
 
-  removeElement() {
-    this._element = null;
+  setPosterClickHandler(handler) {
+    this.getElement().querySelector(`.film-card__poster`).addEventListener(`click`, handler);
+  }
+
+  setCommentClickHandler(handler) {
+    this.getElement().querySelector(`.film-card__comments`).addEventListener(`click`, handler);
   }
 }
 

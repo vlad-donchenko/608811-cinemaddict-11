@@ -1,4 +1,4 @@
-import {randomInteger, getRandomArrayItem} from "../utils";
+import {randomInteger, getRandomArrayItem} from "../utils/common";
 import {comments} from "./comment";
 
 const getRandomComments = () => {
