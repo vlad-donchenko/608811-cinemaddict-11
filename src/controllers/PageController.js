@@ -120,6 +120,7 @@ class PageController {
         return;
       }
 
+      remove(this._showMoreButtonComponent);
       render(movieListElement, this._showMoreButtonComponent, RenderPosition.BEFORE_END);
 
       this._showMoreButtonComponent.setClickHandler(() => {
