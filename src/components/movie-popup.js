@@ -38,7 +38,7 @@ const createCommentMarkUp = (commentItems) => {
   }).join(`\n`);
 };
 
-const createFilmPopupTemplate = (movie, commentEmojiSrc) => {
+const createFilmPopupTemplate = (movie, commentEmoji) => {
   const {title, poster, rating, description, comments: commentsId, ageRating, director, writers, actors, genre, releaseCountry, releaseDate, runtime, watchlist, favorite, alreadyWatched} = movie;
 
   const duration = formatFilmDuration(runtime);
@@ -58,8 +58,8 @@ const createFilmPopupTemplate = (movie, commentEmojiSrc) => {
   const isFavorite = favorite ? `checked` : ``;
   const isAlreadyWatched = alreadyWatched ? `checked` : ``;
 
-  const emojiMarkup = commentEmojiSrc ? `<img src="./images/emoji/${commentEmojiSrc}.png" alt="${commentEmojiSrc}" width="55" height="55">` : ` `;
-
+  const emojiMarkup = commentEmoji ? `<img src="./images/emoji/${commentEmoji}.png" alt="${commentEmoji}" width="55" height="55">` : ` `;
+  console.log(commentEmoji);
   return (
     `<section class="film-details">
       <form class="film-details__inner" action="" method="get">
@@ -147,6 +147,7 @@ const createFilmPopupTemplate = (movie, commentEmojiSrc) => {
 
             <div class="film-details__new-comment">
               <div for="add-emoji" class="film-details__add-emoji-label">
+                <input type="hidden" name="add-emoji" value="${commentEmoji || ``}">
                 ${emojiMarkup}
               </div>
 
@@ -187,7 +188,7 @@ class MoviePopup extends AbstractSmartComponent {
   constructor(movie) {
     super();
     this._movie = movie;
-    this.commentEmojiSrc = null;
+    this.commentEmoji = null;
     this._closeButtonHandler = null;
     this._addWatchListHandler = null;
     this._addWatchedHandler = null;
@@ -208,7 +209,7 @@ class MoviePopup extends AbstractSmartComponent {
   }
 
   getTemplate() {
-    return createFilmPopupTemplate(this._movie, this.commentEmojiSrc);
+    return createFilmPopupTemplate(this._movie, this.commentEmoji);
   }
 
   setCloseButtonClickHandler(handler) {
@@ -233,7 +234,7 @@ class MoviePopup extends AbstractSmartComponent {
 
   _subscribeOnEvents() {
     this.getElement().querySelector(`.film-details__emoji-list`).addEventListener(`change`, (evt) => {
-      this.commentEmojiSrc = evt.target.value;
+      this.commentEmoji = evt.target.value;
       this.rerender();
     });
   }
