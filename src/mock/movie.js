@@ -79,17 +79,15 @@ const getMovie = () => {
     director: [`Anthony Mann`, `Tom Ford`],
     writers: [`Takeshi Kitano`, `Anne Wigton`, `Heinz Herald`, `Richard Weil`],
     actors: [`Erich von Stroheim`, `Mary Beth Hughes`, `Dan Duryea`, `Morgan Freeman`],
-    release: {
-      date: +(new Date()) - Math.random() * 10 * 31536000000,
-      releaseCountry: getRandomArrayItem(countries),
-    },
+    releaseDate: +(new Date()) - Math.random() * 10 * 31536000000,
+    releaseCountry: getRandomArrayItem(countries),
     runtime: randomInteger(77, 180),
+    favorite: Math.random() > 0.5,
+    watchlist: Math.random() > 0.5,
+    alreadyWatched: Math.random() > 0.5,
     userDetails: {
       personalRating: randomInteger(0, 30),
-      watchlist: Math.random() > 0.5,
-      alreadyWatched: Math.random() > 0.5,
       watchingDate: `2019-05-11T16:12:32.554Z`,
-      favorite: Math.random() > 0.5,
     }
   };
 };

@@ -27,9 +27,9 @@ const renderExtraMovie = (movieMainComponent, movies, title) => {
   renderMovies(movieExtraContainer, movies);
 };
 
-const renderMovies = (movieListElement, movies) => {
+const renderMovies = (movieListElement, movies, onDataChange) => {
   return movies.map((movie) => {
-    const movieController = new MovieController(movieListElement);
+    const movieController = new MovieController(movieListElement, onDataChange);
     movieController.render(movie);
     return movieController;
   });
@@ -42,7 +42,7 @@ const getSortedMovies = (sortType, movies, from, to) => {
   switch (sortType) {
     case SortType.SORT_DATE:
       sortedMovies = showingMovies.sort((a, b) => {
-        return b.release.date - a.release.date;
+        return b.releaseDate - a.releaseDate;
       });
       break;
     case SortType.SORT_RATING:
@@ -72,6 +72,7 @@ class PageController {
     this._movieMainComponent = new MovieMainComponent();
     this._sortComponent = new SortComponent();
     this._onSortTypeChange = this._onSortTypeChange.bind(this);
+    this._onDataChange = this._onDataChange.bind(this);
     this._sortComponent.setSortTypeChangeHandler(this._onSortTypeChange);
   }
 
@@ -97,7 +98,7 @@ class PageController {
 
     const movieListContainerElement = this._movieContainerComponent.getElement();
 
-    const newMovies = renderMovies(movieListContainerElement, movies.slice(0, this._showMovieCount));
+    const newMovies = renderMovies(movieListContainerElement, movies.slice(0, this._showMovieCount), this._onDataChange);
     this._showedMovieControllers = this._showedMovieControllers.concat(newMovies);
     this._renderShowMoreButton();
 
@@ -122,10 +123,21 @@ class PageController {
     const movieListContainerElement = this._movieContainerComponent.getElement();
     movieListContainerElement.innerHTML = ``;
 
-    const newMovies = renderMovies(movieListContainerElement, sortedMovies);
+    const newMovies = renderMovies(movieListContainerElement, sortedMovies, this._onDataChange);
     this._showedMovieControllers = this._showedMovieControllers.concat(newMovies);
 
     this._renderShowMoreButton();
+  }
+
+  _onDataChange(movieController, oldData, newData) {
+    const index = this._movies.findIndex((movie) => movie === oldData);
+
+    if (index === -1) {
+      return;
+    }
+
+    this._movies = [].concat(this._movies.slice(0, index), newData, this._movies.slice(index + 1));
+    movieController.render(this._movies[index]);
   }
 
   _renderShowMoreButton() {
@@ -146,7 +158,7 @@ class PageController {
 
       const movieListContainerElement = this._movieContainerComponent.getElement();
 
-      const newMovies = renderMovies(movieListContainerElement, sortedMovies);
+      const newMovies = renderMovies(movieListContainerElement, sortedMovies, this._onDataChange);
       this._showedMovieControllers = this._showedMovieControllers.concat(newMovies);
 
       if (this._showMovieCount >= this._movies.length) {

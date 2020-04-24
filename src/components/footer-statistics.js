@@ -1,4 +1,4 @@
-import AbstractComponent from "./AbstractComponent";
+import AbstractComponent from "./abstract-component";
 
 const createFooterStatisticsTemplate = (moviesCount) => {
   const statisticsTitle = moviesCount !== 0 ? `${moviesCount} movies inside` : `0 movies inside`;

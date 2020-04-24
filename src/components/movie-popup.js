@@ -1,4 +1,4 @@
-import AbstractComponent from "./AbstractComponent";
+import AbstractSmartComponent from "./abstract-smart-component";
 import {
   getCurrentComment,
   convertsArrayToString,
@@ -38,10 +38,8 @@ const createCommentMarkUp = (commentItems) => {
   }).join(`\n`);
 };
 
-const createFilmPopupTemplate = (movie) => {
-  const {title, poster, rating, description, comments: commentsId, ageRating, director, writers, actors, release, genre, userDetails, runtime} = movie;
-  const {date, releaseCountry} = release;
-  const {watchlist, favorite, alreadyWatched} = userDetails;
+const createFilmPopupTemplate = (movie, commentEmojiSrc) => {
+  const {title, poster, rating, description, comments: commentsId, ageRating, director, writers, actors, genre, releaseCountry, releaseDate, runtime, watchlist, favorite, alreadyWatched} = movie;
 
   const duration = formatFilmDuration(runtime);
 
@@ -54,11 +52,13 @@ const createFilmPopupTemplate = (movie) => {
 
   const genreMarkUp = createGenreMarkUp(genre);
 
-  const releaseDate = formatReleaseDate(date);
+  const releaseDateFull = formatReleaseDate(releaseDate);
 
   const isWatchlist = watchlist ? `checked` : ``;
   const isFavorite = favorite ? `checked` : ``;
   const isAlreadyWatched = alreadyWatched ? `checked` : ``;
+
+  const emojiMarkup = commentEmojiSrc ? `<img src="./images/emoji/${commentEmojiSrc}.png" alt="${commentEmojiSrc}" width="55" height="55">` : ` `;
 
   return (
     `<section class="film-details">
@@ -101,7 +101,7 @@ const createFilmPopupTemplate = (movie) => {
                 </tr>
                 <tr class="film-details__row">
                   <td class="film-details__term">Release Date</td>
-                  <td class="film-details__cell">${releaseDate}</td>
+                  <td class="film-details__cell">${releaseDateFull}</td>
                 </tr>
                 <tr class="film-details__row">
                   <td class="film-details__term">Runtime</td>
@@ -129,10 +129,10 @@ const createFilmPopupTemplate = (movie) => {
             <input type="checkbox" class="film-details__control-input visually-hidden" id="watchlist" name="watchlist" ${isWatchlist}>
             <label for="watchlist" class="film-details__control-label film-details__control-label--watchlist">Add to watchlist</label>
 
-            <input type="checkbox" class="film-details__control-input visually-hidden" id="watched" name="watched" ${isFavorite}>
+            <input type="checkbox" class="film-details__control-input visually-hidden" id="watched" name="watched" ${isAlreadyWatched}>
             <label for="watched" class="film-details__control-label film-details__control-label--watched">Already watched</label>
 
-            <input type="checkbox" class="film-details__control-input visually-hidden" id="favorite" name="favorite" ${isAlreadyWatched}>
+            <input type="checkbox" class="film-details__control-input visually-hidden" id="favorite" name="favorite" ${isFavorite}>
             <label for="favorite" class="film-details__control-label film-details__control-label--favorite">Add to favorites</label>
           </section>
         </div>
@@ -146,7 +146,9 @@ const createFilmPopupTemplate = (movie) => {
             </ul>
 
             <div class="film-details__new-comment">
-              <div for="add-emoji" class="film-details__add-emoji-label"></div>
+              <div for="add-emoji" class="film-details__add-emoji-label">
+                ${emojiMarkup}
+              </div>
 
               <label class="film-details__comment-label">
                 <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment"></textarea>
@@ -181,18 +183,59 @@ const createFilmPopupTemplate = (movie) => {
   );
 };
 
-class MoviePopup extends AbstractComponent {
+class MoviePopup extends AbstractSmartComponent {
   constructor(movie) {
     super();
     this._movie = movie;
+    this.commentEmojiSrc = null;
+    this._closeButtonHandler = null;
+    this._addWatchListHandler = null;
+    this._addWatchedHandler = null;
+    this._addFavoriteHandler = null;
+    this._subscribeOnEvents();
+  }
+
+  recoveryListeners() {
+    this.setCloseButtonClickHandler(this._closeButtonHandler);
+    this.setAddWatchListChangeHandler(this._addWatchListHandler);
+    this.setAddWatchedChangeHandler(this._addWatchedHandler);
+    this.setAddFavoriteChangeHandler(this._addFavoriteHandler);
+    this._subscribeOnEvents();
+  }
+
+  rerender() {
+    super.rerender();
   }
 
   getTemplate() {
-    return createFilmPopupTemplate(this._movie);
+    return createFilmPopupTemplate(this._movie, this.commentEmojiSrc);
   }
 
   setCloseButtonClickHandler(handler) {
     this.getElement().querySelector(`.film-details__close-btn`).addEventListener(`click`, handler);
+    this._closeButtonHandler = handler;
+  }
+
+  setAddWatchListChangeHandler(handler) {
+    this.getElement().querySelector(`#watchlist`).addEventListener(`change`, handler);
+    this._addWatchListHandler = handler;
+  }
+
+  setAddWatchedChangeHandler(handler) {
+    this.getElement().querySelector(`#watched`).addEventListener(`change`, handler);
+    this._addWatchedHandler = handler;
+  }
+
+  setAddFavoriteChangeHandler(handler) {
+    this.getElement().querySelector(`#favorite`).addEventListener(`change`, handler);
+    this._addFavoriteHandler = handler;
+  }
+
+  _subscribeOnEvents() {
+    this.getElement().querySelector(`.film-details__emoji-list`).addEventListener(`change`, (evt) => {
+      this.commentEmojiSrc = evt.target.value;
+      this.rerender();
+    });
   }
 }
 

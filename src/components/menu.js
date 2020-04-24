@@ -1,4 +1,4 @@
-import AbstractComponent from "./AbstractComponent";
+import AbstractComponent from "./abstract-component";
 
 const creteFilterMarkup = (menuItem, activeMenuItem) => {
   const {title, count} = menuItem;
