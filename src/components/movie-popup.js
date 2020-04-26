@@ -59,7 +59,7 @@ const createFilmPopupTemplate = (movie, commentEmoji) => {
   const isAlreadyWatched = alreadyWatched ? `checked` : ``;
 
   const emojiMarkup = commentEmoji ? `<img src="./images/emoji/${commentEmoji}.png" alt="${commentEmoji}" width="55" height="55">` : ` `;
-  console.log(commentEmoji);
+
   return (
     `<section class="film-details">
       <form class="film-details__inner" action="" method="get">

@@ -2,11 +2,18 @@ import {RenderPosition, remove, render, replace} from "../utils/render";
 import MovieComponent from "../components/movie";
 import MoviePopupComponent from "../components/movie-popup";
 
+const Mode = {
+  DEFAULT: `default`,
+  POPUP: `popup`,
+};
+
 class MovieController {
-  constructor(container, onDataChange) {
+  constructor(container, onDataChange, onViewChange) {
     this._movie = null;
+    this._mode = Mode.DEFAULT;
     this._container = container;
     this._onDataChange = onDataChange;
+    this._onViewChange = onViewChange;
     this._moviePopupComponent = null;
     this._movieComponent = null;
     this._bodyElement = document.querySelector(`body`);
@@ -32,6 +39,12 @@ class MovieController {
       replace(this._moviePopupComponent, oldMoviePopupComponent);
     } else {
       render(this._container, this._movieComponent, RenderPosition.BEFORE_END);
+    }
+  }
+
+  setDefaultView() {
+    if (this._mode !== Mode.DEFAULT) {
+      this._closePopup();
     }
   }
 
@@ -112,7 +125,9 @@ class MovieController {
   _onOpenPopupClick() {
     this._moviePopupComponent = this._getMoviePopup(this._movie);
     render(this._bodyElement, this._moviePopupComponent, RenderPosition.BEFORE_END);
+    this._onViewChange();
     document.addEventListener(`keydown`, this._onClosePopupCloseKeyPress);
+    this._mode = Mode.POPUP;
   }
 
   _onClosePopupClick() {
@@ -131,6 +146,7 @@ class MovieController {
   _closePopup() {
     document.removeEventListener(`keydown`, this._onClosePopupCloseKeyPress);
     remove(this._moviePopupComponent);
+    this._mode = Mode.DEFAULT;
   }
 }
 
