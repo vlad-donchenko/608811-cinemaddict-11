@@ -1,13 +1,11 @@
 import {MAX_MOVIE_CARD_DESCRIPTION_LENGTH} from "../const";
-import AbstractComponent from "./AbstractComponent";
+import AbstractComponent from "./abstract-component";
 import {getCommentTitles, formatFilmDuration} from "../utils/common";
 
 const createMovieTemplate = (movie) => {
-  const {title, poster, description, rating, comments, genre, runtime, userDetails, release} = movie;
-  const {watchlist, favorite, alreadyWatched} = userDetails;
-  const {date} = release;
+  const {title, poster, description, rating, comments, genre, runtime, watchlist, favorite, alreadyWatched, releaseDate} = movie;
 
-  const releaseDate = new Date(date).getFullYear();
+  const releaseDateYear = new Date(releaseDate).getFullYear();
 
   const commentTitle = getCommentTitles(comments.length);
   const duration = formatFilmDuration(runtime);
@@ -21,7 +19,7 @@ const createMovieTemplate = (movie) => {
         <h3 class="film-card__title">${title}</h3>
         <p class="film-card__rating">${rating}</p>
         <p class="film-card__info">
-          <span class="film-card__year">${releaseDate}</span>
+          <span class="film-card__year">${releaseDateYear}</span>
           <span class="film-card__duration">${duration}</span>
           <span class="film-card__genre">${genre[0]}</span>
         </p>
@@ -30,8 +28,8 @@ const createMovieTemplate = (movie) => {
         <a class="film-card__comments">${comments.length} ${commentTitle}</a>
         <form class="film-card__controls">
           <button type="button" class="film-card__controls-item button film-card__controls-item--add-to-watchlist ${alreadyWatchListClass}">Add to watchlist</button>
-          <button type="button" class="film-card__controls-item button film-card__controls-item--mark-as-watched ${favoriteClass}">Mark as watched</button>
-          <button type="button" class="film-card__controls-item button film-card__controls-item--favorite ${alreadyWatchedClass}">Mark as favorite</button>
+          <button type="button" class="film-card__controls-item button film-card__controls-item--mark-as-watched ${alreadyWatchedClass}">Mark as watched</button>
+          <button type="button" class="film-card__controls-item button film-card__controls-item--favorite ${favoriteClass}">Mark as favorite</button>
         </form>
     </article>`
   );
@@ -57,6 +55,18 @@ class Movie extends AbstractComponent {
 
   setCommentClickHandler(handler) {
     this.getElement().querySelector(`.film-card__comments`).addEventListener(`click`, handler);
+  }
+
+  setAddWatchListClickHandler(handler) {
+    this.getElement().querySelector(`.film-card__controls-item--add-to-watchlist`).addEventListener(`click`, handler);
+  }
+
+  setAddWatchedClickHandler(handler) {
+    this.getElement().querySelector(`.film-card__controls-item--mark-as-watched`).addEventListener(`click`, handler);
+  }
+
+  setAddFavoriteClickHandler(handler) {
+    this.getElement().querySelector(`.film-card__controls-item--favorite`).addEventListener(`click`, handler);
   }
 }
 

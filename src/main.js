@@ -1,7 +1,7 @@
 import {MOVIE_COUNT} from "./const";
 import UserRankComponent from "./components/user-rank";
 import FooterStatisticsComponent from "./components/footer-statistics";
-import PageController from "./controllers/PageController";
+import PageController from "./controllers/page";
 import {getMovies} from "./mock/movie";
 import {RenderPosition, render} from "./utils/render";
 
