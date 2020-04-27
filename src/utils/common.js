@@ -1,4 +1,6 @@
-import {EXTRA_MOVIE_COUNT, MONTH_NAMES} from "../const";
+import {EXTRA_MOVIE_COUNT} from "../const";
+import moment from "moment";
+import "moment-duration-format";
 
 const getTopRatingMovies = (movies) => {
   return movies.sort((a, b) => {
@@ -39,30 +41,19 @@ const getCurrentComment = (commentsId, comments) => {
 };
 
 const formatFilmDuration = (filmDuration) => {
-  const hour = Math.floor(filmDuration / 60);
-  const minutes = filmDuration - 60 * hour;
-
-  return `${hour > 0 ? `${hour}h` : ``} ${minutes > 0 ? `${minutes}m` : ``}`;
+  return moment.duration(filmDuration, `minutes`).format(`h[h] m[m]`);
 };
 
 const formatReleaseDate = (date) => {
-  const targetDate = new Date(date);
-  const day = targetDate.getDate();
-  const month = MONTH_NAMES[targetDate.getMonth()];
-  const year = targetDate.getFullYear();
+  return moment(date).format(`D MMM YYYY`);
+};
 
-  return `${day} ${month} ${year}`;
+const formatReleaseYear = (date) => {
+  return moment(date).format(`YYYY`);
 };
 
 const formatCommentDate = (date) => {
-  const targetDate = new Date(date);
-  const day = targetDate.getDate();
-  const month = targetDate.getMonth() + 1;
-  const year = targetDate.getFullYear();
-  const hours = targetDate.getHours();
-  const minutes = targetDate.getMinutes();
-
-  return `${year}/${month}/${day} ${hours} : ${minutes}`;
+  return moment(date).fromNow();
 };
 
 const convertsArrayToString = (array, separator) => {
@@ -83,4 +74,17 @@ const getUserRankTitle = (rank) => {
   return rankTitle;
 };
 
-export {getTopRatingMovies, randomInteger, getRandomArrayItem, getCommentTitles, formatFilmDuration, getMostCommentedFilms, convertsArrayToString, getCurrentComment, formatReleaseDate, formatCommentDate, getUserRankTitle};
+export {
+  getTopRatingMovies,
+  randomInteger,
+  getRandomArrayItem,
+  getCommentTitles,
+  formatFilmDuration,
+  getMostCommentedFilms,
+  convertsArrayToString,
+  getCurrentComment,
+  formatReleaseDate,
+  formatCommentDate,
+  getUserRankTitle,
+  formatReleaseYear
+};
