@@ -12,19 +12,4 @@ const ExtraMovieTitle = {
   MOST_COMMENTED: `Most commented`
 };
 
-const MONTH_NAMES = [
-  `January`,
-  `February`,
-  `March`,
-  `April`,
-  `May`,
-  `June`,
-  `July`,
-  `August`,
-  `September`,
-  `October`,
-  `November`,
-  `December`,
-];
-
-export {MOVIE_COUNT, EXTRA_MOVIE_COUNT, FILTERS, MOVIE_SHOW_START, MAX_MOVIE_CARD_DESCRIPTION_LENGTH, SHOWING_MOVIE_COUNT_BY_BUTTON, COMMENTS_COUNT, MONTH_NAMES, ExtraMovieTitle};
+export {MOVIE_COUNT, EXTRA_MOVIE_COUNT, FILTERS, MOVIE_SHOW_START, MAX_MOVIE_CARD_DESCRIPTION_LENGTH, SHOWING_MOVIE_COUNT_BY_BUTTON, COMMENTS_COUNT, ExtraMovieTitle};

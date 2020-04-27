@@ -1,11 +1,11 @@
 import {MAX_MOVIE_CARD_DESCRIPTION_LENGTH} from "../const";
 import AbstractComponent from "./abstract-component";
-import {getCommentTitles, formatFilmDuration} from "../utils/common";
+import {getCommentTitles, formatFilmDuration, formatReleaseYear} from "../utils/common";
 
 const createMovieTemplate = (movie) => {
   const {title, poster, description, rating, comments, genre, runtime, watchlist, favorite, alreadyWatched, releaseDate} = movie;
 
-  const releaseDateYear = new Date(releaseDate).getFullYear();
+  const releaseDateYear = formatReleaseYear(releaseDate);
 
   const commentTitle = getCommentTitles(comments.length);
   const duration = formatFilmDuration(runtime);
