@@ -1,5 +1,5 @@
 import {FilterType} from "../const";
-import MenuComponent from "../components/menu";
+import MenuComponent from "../components/filter";
 import {getMoviesByFilter} from "../utils/filter";
 import {RenderPosition, replace, render} from "../utils/render";
 
