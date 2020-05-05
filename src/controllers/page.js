@@ -117,7 +117,7 @@ class PageController {
     const container = this._createNewExtraContainer(ExtraMovieTitle.MOST_COMMENTED);
 
     if (movies[0].comments.length !== 0) {
-      this._renderMovies(movies, container);
+      renderMovies(container, movies, this._onDataChange, this._onViewChange);
     }
   }
 
@@ -127,7 +127,7 @@ class PageController {
     const container = this._createNewExtraContainer(ExtraMovieTitle.TOP_RATED);
 
     if (movies[0].comments.length !== 0) {
-      this._renderMovies(movies, container);
+      renderMovies(container, movies, this._onDataChange, this._onViewChange);
     }
   }
 
