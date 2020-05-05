@@ -1,5 +1,6 @@
 import {MOVIE_COUNT} from "./const";
 import UserRankComponent from "./components/user-rank";
+import StatisticsComponent from "./components/statistics";
 import FooterStatisticsComponent from "./components/footer-statistics";
 import PageController from "./controllers/page";
 import {getMovies} from "./mock/movie";
@@ -15,6 +16,9 @@ const mainElement = document.querySelector(`.main`);
 
 const pageController = new PageController(mainElement);
 pageController.render(movies);
+
+const statisticsComponent = new StatisticsComponent();
+render(mainElement, statisticsComponent, RenderPosition.BEFORE_END);
 
 const footerElement = document.querySelector(`.footer`);
 render(footerElement, new FooterStatisticsComponent(movies.length), RenderPosition.BEFORE_END);
