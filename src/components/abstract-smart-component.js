@@ -15,6 +15,8 @@ class AbstractSmartComponent extends AbstractComponent {
 
     const newElement = this.getElement();
 
+    newElement.style.animationDuration = `0s`;
+
     parent.replaceChild(newElement, oldElement);
 
     newElement.scrollTop = scrollTop;
