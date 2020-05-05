@@ -42,6 +42,12 @@ class MovieController {
     }
   }
 
+  destroy() {
+    remove(this._movieComponent);
+    remove(this._moviePopupComponent);
+    document.removeEventListener(`keydown`, this._onClosePopupCloseKeyPress);
+  }
+
   setDefaultView() {
     if (this._mode !== Mode.DEFAULT) {
       this._closePopup();
