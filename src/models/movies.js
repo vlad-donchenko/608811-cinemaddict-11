@@ -1,5 +1,6 @@
 import {FilterType} from "../const";
 import {getMoviesByFilter} from "../utils/filter";
+import {getMostCommentedFilms, getTopRatingMovies} from "../utils/common";
 
 class Movies {
   constructor() {
@@ -15,6 +16,14 @@ class Movies {
 
   getMovies() {
     return getMoviesByFilter(this._activeFilterType, this._movies);
+  }
+
+  getMostCommentedMovies() {
+    return getMostCommentedFilms(this._movies);
+  }
+
+  getTopRatedMovies() {
+    return getTopRatingMovies(this._movies);
   }
 
   setFilter(filterType) {

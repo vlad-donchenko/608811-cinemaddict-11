@@ -18,10 +18,10 @@ const createGenreMarkUp = (genres) => {
 
 const createCommentMarkUp = (commentItems) => {
   return commentItems.map((commentItem) => {
-    const {author, comment, emotion, date} = commentItem;
+    const {id, author, comment, emotion, date} = commentItem;
     const commentDate = formatCommentDate(date);
     return (
-      `<li class="film-details__comment">
+      `<li class="film-details__comment" id="${id}">
         <span class="film-details__comment-emoji">
           <img src="./images/emoji/${emotion}" width="55" height="55" alt="emoji">
         </span>
@@ -30,7 +30,7 @@ const createCommentMarkUp = (commentItems) => {
           <p class="film-details__comment-info">
             <span class="film-details__comment-author">${author}</span>
             <span class="film-details__comment-day">${commentDate}</span>
-            <button class="film-details__comment-delete">Delete</button>
+            <button type="button" class="film-details__comment-delete">Delete</button>
           </p>
         </div>
       </li>`
@@ -230,6 +230,14 @@ class MoviePopup extends AbstractSmartComponent {
   setAddFavoriteChangeHandler(handler) {
     this.getElement().querySelector(`#favorite`).addEventListener(`change`, handler);
     this._addFavoriteHandler = handler;
+  }
+
+  setDeleteButtonClick(handler) {
+    this.getElement().querySelectorAll(`.film-details__comment`).forEach((comment) => {
+      comment.querySelector(`.film-details__comment-delete`).addEventListener(`click`, () => {
+        handler(comment.id);
+      });
+    });
   }
 
   _subscribeOnEvents() {

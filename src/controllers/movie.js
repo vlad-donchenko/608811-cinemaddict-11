@@ -107,6 +107,10 @@ class MovieController {
       this._addFavoriteHandler();
     });
 
+    moviePopupComponent.setDeleteButtonClick((id) => {
+      console.log(`Будет удален - ${id}`);
+    });
+
     return moviePopupComponent;
   }
 
