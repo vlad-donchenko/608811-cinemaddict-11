@@ -69,6 +69,7 @@ const getGenre = () => {
 
 const getMovie = () => {
   return {
+    id: String(+new Date() + Math.random()),
     title: getRandomArrayItem(titles),
     poster: getRandomArrayItem(posters),
     description: getRandomDescription(),

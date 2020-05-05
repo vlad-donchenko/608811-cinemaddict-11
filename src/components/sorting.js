@@ -31,6 +31,11 @@ class Sort extends AbstractSmartComponent {
     return this._currentSortType;
   }
 
+  setSortType(sortType) {
+    this._currentSortType = sortType;
+    this.rerender();
+  }
+
   recoveryListeners() {
     this.setSortTypeChangeHandler(this._sortTypeHandler);
   }
