@@ -24,7 +24,7 @@ filterController.render();
 const pageController = new PageController(mainElement, moviesModel);
 pageController.render();
 
-const statisticsComponent = new StatisticsComponent();
+const statisticsComponent = new StatisticsComponent(moviesModel);
 render(mainElement, statisticsComponent, RenderPosition.BEFORE_END);
 
 const footerElement = document.querySelector(`.footer`);

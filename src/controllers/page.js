@@ -87,6 +87,15 @@ class PageController {
     this._renderMostCommentedFilms();
   }
 
+  hide() {
+    this._container.hide();
+  }
+
+  show() {
+    this._container.show();
+  }
+
+
   _removeMovies() {
     this._showedMovieControllers.forEach((showedMovieController) => showedMovieController.destroy());
     this._showedMovieControllers = [];

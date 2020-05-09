@@ -14,6 +14,34 @@ const getMostCommentedFilms = (movies) => {
   }).slice(0, EXTRA_MOVIE_COUNT);
 };
 
+const getWatchedMovies = (movies) => {
+  return movies.slice().filter((movie) => {
+    return movie.alreadyWatched;
+  });
+};
+
+const getUniqueGenre = (movies) => {
+  console.log(movies);
+  let genre = [];
+
+  for (const movie of movies) {
+    genre.push(...movie.genre);
+  }
+
+  console.log(genre);
+  return new Set(genre);
+};
+
+const calcUniqueGenre = (uniqueGenre, movies) => {
+  return movies.genre.filter((it) => {
+    return it === uniqueGenre;
+  }).length;
+};
+
+const getTopGenre = (movies) => {
+  const uniqueGenres = getUniqueGenre(movies);
+};
+
 const randomInteger = (min, max) => {
   const random = min - 0.5 + Math.random() * (max - min + 1);
   return Math.round(random);
@@ -86,5 +114,7 @@ export {
   formatReleaseDate,
   formatCommentDate,
   getUserRankTitle,
-  formatReleaseYear
+  formatReleaseYear,
+  getWatchedMovies,
+  getTopGenre
 };
