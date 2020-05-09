@@ -33,7 +33,7 @@ class FilterController {
     if (oldFilterComponent) {
       replace(this._filterComponent, oldFilterComponent);
     } else {
-      render(container, this._filterComponent, RenderPosition.BEFORE_END);
+      render(container, this._filterComponent, RenderPosition.AFTER_BEGIN);
     }
   }
 

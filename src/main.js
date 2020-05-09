@@ -3,6 +3,7 @@ import UserRankComponent from "./components/user-rank";
 import StatisticsComponent from "./components/statistics";
 import FooterStatisticsComponent from "./components/footer-statistics";
 import PageController from "./controllers/page";
+import MenuComponent from "./components/menu";
 import FilterController from "./controllers/filter";
 import MoviesModel from "./models/movies";
 import {getMovies} from "./mock/movie";
@@ -18,7 +19,12 @@ render(headerElement, new UserRankComponent(userRank), RenderPosition.BEFORE_END
 
 const mainElement = document.querySelector(`.main`);
 
-const filterController = new FilterController(mainElement, moviesModel);
+const menuComponent = new MenuComponent();
+render(mainElement, menuComponent, RenderPosition.BEFORE_END);
+
+const filterContainerElement = menuComponent.getElement();
+
+const filterController = new FilterController(filterContainerElement, moviesModel);
 filterController.render();
 
 const pageController = new PageController(mainElement, moviesModel);
@@ -29,3 +35,7 @@ render(mainElement, statisticsComponent, RenderPosition.BEFORE_END);
 
 const footerElement = document.querySelector(`.footer`);
 render(footerElement, new FooterStatisticsComponent(movies.length), RenderPosition.BEFORE_END);
+
+menuComponent.setMenuChangeHandler((id) => {
+  console.log(id);
+});
