@@ -1,19 +1,48 @@
 import AbstractSmartComponent from "./abstract-smart-component";
-import {getWatchedMovies, getTopGenre} from "../utils/common";
+import {
+  getTodayMovies,
+  getWeekMovies,
+  getMonthMovies,
+  getYearsMovies,
+  getTopGenre,
+  getUniqueGenresInfo
+} from "../utils/statistics";
+import {getWatchedMovies, formatFilmDuration} from "../utils/common";
 import Chart from "chart.js";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 
+const StatsType = {
+  ALL_TIME: `all-time`,
+  TODAY: `today`,
+  WEEK: `week`,
+  Month: `month`,
+  YEAR: `year`
+};
 
-const renderChart = (statisticCtx) => {
+const getMoviesDuration = (runtimeItems) => {
+  return runtimeItems.reduce((accumulator, runtimeItem) => accumulator + runtimeItem);
+};
+
+const renderChart = (statisticCtx, movies) => {
+  const uniqueGenresInfo = getUniqueGenresInfo(movies);
+
+  const labelsItems = uniqueGenresInfo.slice().map((uniqueGenre) => {
+    return uniqueGenre.name;
+  });
+
+  const dataItems = uniqueGenresInfo.slice().map((uniqueGenre) => {
+    return uniqueGenre.counter;
+  });
+
   return new Chart(statisticCtx, {
     plugins: [ChartDataLabels],
     type: `horizontalBar`,
     data: {
-      labels: [`Sci-Fi`, `Animation`, `Fantasy`, `Comedy`, `TV Series`],
+      labels: labelsItems,
       datasets: [{
-        data: [11, 8, 7, 4, 3],
+        data: dataItems,
         backgroundColor: `#ffe800`,
-        hoverBackgroundColor: `#ffe800`,
+        hoverBackgroundColor: `#ffba47`,
         anchor: `start`
       }]
     },
@@ -63,17 +92,26 @@ const renderChart = (statisticCtx) => {
   });
 };
 
-const createStatisticsTemplate = (movies) => {
+const createStatisticsTemplate = (movies, userRank) => {
   const watchedMovies = getWatchedMovies(movies);
   const watchedMoviesCount = watchedMovies.length;
   const topGenre = getTopGenre(watchedMovies);
+  const runtimeItems = movies.slice().map((movie) => {
+    return movie.runtime;
+  });
+
+  const totalRuntime = getMoviesDuration(runtimeItems);
+  const totalRuntimeFormat = formatFilmDuration(totalRuntime);
+  const totalRuntimeHours = totalRuntimeFormat.slice(0, totalRuntimeFormat.indexOf(`h`, 0));
+  const totalRuntimeMinutes = totalRuntimeFormat.slice(totalRuntimeFormat.indexOf(` `, 0), totalRuntimeFormat.indexOf(`m`, 0)).trim();
+
 
   return (
     `<section class="statistic">
     <p class="statistic__rank">
       Your rank
       <img class="statistic__img" src="images/bitmap@2x.png" alt="Avatar" width="35" height="35">
-      <span class="statistic__rank-label">Sci-Fighter</span>
+      <span class="statistic__rank-label">${userRank}</span>
     </p>
 
     <form action="https://echo.htmlacademy.ru/" method="get" class="statistic__filters">
@@ -102,11 +140,11 @@ const createStatisticsTemplate = (movies) => {
       </li>
       <li class="statistic__text-item">
         <h4 class="statistic__item-title">Total duration</h4>
-        <p class="statistic__item-text">130 <span class="statistic__item-description">h</span> 22 <span class="statistic__item-description">m</span></p>
+        <p class="statistic__item-text">${totalRuntimeHours} <span class="statistic__item-description">h</span> ${totalRuntimeMinutes} <span class="statistic__item-description">m</span></p>
       </li>
       <li class="statistic__text-item">
         <h4 class="statistic__item-title">Top genre</h4>
-        <p class="statistic__item-text">Sci-Fi</p>
+        <p class="statistic__item-text">${topGenre}</p>
       </li>
     </ul>
 
@@ -119,13 +157,71 @@ const createStatisticsTemplate = (movies) => {
 };
 
 class Statistics extends AbstractSmartComponent {
-  constructor(movies) {
+  constructor(movies, userRank) {
     super();
     this._movies = movies;
+    this._userRank = userRank;
+    this._statsType = StatsType.ALL_TIME;
+    this._chart = null;
+    this._renderCharts(this._statsType);
+    this._setFilterChangeHandler();
   }
 
   getTemplate() {
-    return createStatisticsTemplate(this._movies.getMovies());
+    return createStatisticsTemplate(this._movies.getMoviesAll(), this._userRank);
+  }
+
+  rerender() {
+    super.rerender();
+
+    this._renderCharts(this._statsType);
+  }
+
+  _resetCharts() {
+    if (this._chart) {
+      this._chart.destroy();
+      this._chart = null;
+    }
+  }
+
+  _renderCharts(statsType) {
+    const element = this.getElement();
+    const statisticCtx = element.querySelector(`.statistic__chart`);
+
+    this._resetCharts();
+    this._chart = renderChart(statisticCtx, this._getMoviesByStatsType(statsType));
+  }
+
+  _setFilterChangeHandler() {
+    this.getElement().querySelector(`.statistic__filters`).addEventListener(`change`, (evt) => {
+      evt.target.checked = true;
+      this._statsType = evt.target.value;
+      this._renderCharts(this._statsType);
+    });
+  }
+
+  _getMoviesByStatsType(statsType) {
+    let movies = [];
+
+    switch (statsType) {
+      case StatsType.ALL_TIME:
+        movies = this._movies.getMoviesAll();
+        break;
+      case StatsType.TODAY:
+        movies = getTodayMovies(this._movies.getMoviesAll());
+        break;
+      case StatsType.WEEK:
+        movies = getWeekMovies(this._movies.getMoviesAll());
+        break;
+      case StatsType.Month:
+        movies = getMonthMovies(this._movies.getMoviesAll());
+        break;
+      case StatsType.YEAR:
+        movies = getYearsMovies(this._movies.getMoviesAll());
+        break;
+    }
+
+    return movies;
   }
 }
 

@@ -20,26 +20,15 @@ const getWatchedMovies = (movies) => {
   });
 };
 
-const getUniqueGenre = (movies) => {
-  console.log(movies);
-  let genre = [];
+const convertSetToArray = (items) => {
+  const array = [];
 
-  for (const movie of movies) {
-    genre.push(...movie.genre);
+  for (const item of items) {
+    array.push(item);
   }
 
-  console.log(genre);
-  return new Set(genre);
-};
+  return array;
 
-const calcUniqueGenre = (uniqueGenre, movies) => {
-  return movies.genre.filter((it) => {
-    return it === uniqueGenre;
-  }).length;
-};
-
-const getTopGenre = (movies) => {
-  const uniqueGenres = getUniqueGenre(movies);
 };
 
 const randomInteger = (min, max) => {
@@ -116,5 +105,4 @@ export {
   getUserRankTitle,
   formatReleaseYear,
   getWatchedMovies,
-  getTopGenre
 };

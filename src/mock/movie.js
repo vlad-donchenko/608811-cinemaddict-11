@@ -1,6 +1,25 @@
 import {randomInteger, getRandomArrayItem} from "../utils/common";
 import {comments} from "./comment";
 
+
+const watchingDates = [
+  `2020-05-03T19:08:05.477Z`,
+  `2020-05-03T19:08:05.477Z`,
+  `2020-05-03T19:08:05.477Z`,
+  `2020-04-20T19:08:05.477Z`,
+  `2020-04-21T19:08:05.477Z`,
+  `2020-04-10T19:08:05.493Z`,
+  `2019-08-15T19:08:05.493Z`,
+  `2019-05-10T19:08:05.493Z`,
+  `2019-05-01T19:08:05.493Z`,
+  `2019-08-11T19:08:05.493Z`,
+  `2020-05-10T19:08:05.493Z`,
+  `2020-05-10T19:08:05.493Z`,
+  `2020-05-10T19:08:05.493Z`,
+  `2019-09-08T19:08:05.494Z`,
+  `2019-08-01T19:08:05.494Z`
+];
+
 const getRandomComments = () => {
   return comments.slice().filter(() => {
     return Math.random() > 0.5;
@@ -67,7 +86,7 @@ const getGenre = () => {
   return currentGenres.slice(0, randomInteger(1, currentGenres.length - 1));
 };
 
-const getMovie = () => {
+const getMovie = (index) => {
   return {
     id: String(+new Date() + Math.random()),
     title: getRandomArrayItem(titles),
@@ -88,7 +107,7 @@ const getMovie = () => {
     alreadyWatched: Math.random() > 0.5,
     userDetails: {
       personalRating: randomInteger(0, 30),
-      watchingDate: `2019-05-11T16:12:32.554Z`,
+      watchingDate: watchingDates[index],
     }
   };
 };
@@ -97,7 +116,7 @@ const getMovies = (count) => {
   const movies = [];
 
   for (let i = 0; i < count; i++) {
-    movies.push(getMovie());
+    movies.push(getMovie(i));
   }
 
   return movies;
