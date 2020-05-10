@@ -14,23 +14,6 @@ const getMostCommentedFilms = (movies) => {
   }).slice(0, EXTRA_MOVIE_COUNT);
 };
 
-const getWatchedMovies = (movies) => {
-  return movies.slice().filter((movie) => {
-    return movie.alreadyWatched;
-  });
-};
-
-const convertSetToArray = (items) => {
-  const array = [];
-
-  for (const item of items) {
-    array.push(item);
-  }
-
-  return array;
-
-};
-
 const randomInteger = (min, max) => {
   const random = min - 0.5 + Math.random() * (max - min + 1);
   return Math.round(random);
@@ -77,14 +60,14 @@ const convertsArrayToString = (array, separator) => {
   return array.length > 0 ? array.join(separator) : array[0];
 };
 
-const getUserRankTitle = (rank) => {
-  let rankTitle = ``;
+const getUserRankTitle = (watchedMovies) => {
+  let rankTitle = `no rank`;
 
-  if (rank >= 1 && rank <= 10) {
+  if (watchedMovies.length >= 1 && watchedMovies.length <= 10) {
     rankTitle = `novice`;
-  } else if (rank >= 11 && rank <= 20) {
+  } else if (watchedMovies.length >= 11 && watchedMovies.length <= 20) {
     rankTitle = `fan`;
-  } else if (rank >= 21) {
+  } else if (watchedMovies.length >= 21) {
     rankTitle = `movie buf`;
   }
 
@@ -104,5 +87,4 @@ export {
   formatCommentDate,
   getUserRankTitle,
   formatReleaseYear,
-  getWatchedMovies,
 };

@@ -1,5 +1,7 @@
 import AbstractComponent from "./abstract-component";
 
+const HIDDEN_CLASS = `visually-hidden`;
+
 class AbstractSmartComponent extends AbstractComponent {
   recoveryListeners() {
     throw new Error(`Abstract method not implemented: recoveryListeners`);
@@ -23,6 +25,18 @@ class AbstractSmartComponent extends AbstractComponent {
     newElement.scrollLeft = scrollLeft;
 
     this.recoveryListeners();
+  }
+
+  show() {
+    if (this._element) {
+      this._element.classList.remove(HIDDEN_CLASS);
+    }
+  }
+
+  hide() {
+    if (this._element) {
+      this._element.classList.add(HIDDEN_CLASS);
+    }
   }
 }
 

@@ -88,11 +88,11 @@ class PageController {
   }
 
   hide() {
-    this._container.hide();
+    this._movieMainComponent.hide();
   }
 
   show() {
-    this._container.show();
+    this._movieMainComponent.show();
   }
 
 

@@ -6,8 +6,7 @@ const creteFilterMarkup = (menuItem, activeMenuItem) => {
 
   const activeFilterClass = activeMenuItem ? `main-navigation__item--active` : ``;
   const linkHref = title.split(` `).join(``).toLowerCase();
-
-  const navigationCountMarkup = count ? `<span class="main-navigation__item-count">${count}</span>` : ``;
+  const navigationCountMarkup = count !== null ? `<span class="main-navigation__item-count">${count}</span>` : ``;
 
   return (
     `<a href="#${linkHref}" class="main-navigation__item ${activeFilterClass}" data-filter="${title}" id="${title}">

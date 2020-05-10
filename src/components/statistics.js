@@ -7,7 +7,7 @@ import {
   getTopGenre,
   getUniqueGenresInfo
 } from "../utils/statistics";
-import {getWatchedMovies, formatFilmDuration} from "../utils/common";
+import {formatFilmDuration, getUserRankTitle} from "../utils/common";
 import Chart from "chart.js";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 
@@ -92,18 +92,18 @@ const renderChart = (statisticCtx, movies) => {
   });
 };
 
-const createStatisticsTemplate = (movies, userRank) => {
-  const watchedMovies = getWatchedMovies(movies);
-  const watchedMoviesCount = watchedMovies.length;
-  const topGenre = getTopGenre(watchedMovies);
-  const runtimeItems = movies.slice().map((movie) => {
-    return movie.runtime;
-  });
+const createStatisticsTemplate = (movies, userRank, topGenre, runtimeItems) => {
+  const watchedMoviesCount = movies.length;
 
-  const totalRuntime = getMoviesDuration(runtimeItems);
-  const totalRuntimeFormat = formatFilmDuration(totalRuntime);
-  const totalRuntimeHours = totalRuntimeFormat.slice(0, totalRuntimeFormat.indexOf(`h`, 0));
-  const totalRuntimeMinutes = totalRuntimeFormat.slice(totalRuntimeFormat.indexOf(` `, 0), totalRuntimeFormat.indexOf(`m`, 0)).trim();
+  const totalRuntime = runtimeItems ? getMoviesDuration(runtimeItems) : 0;
+  let totalRuntimeHours = 0;
+  let totalRuntimeMinutes = 0;
+
+  if (totalRuntime !== 0) {
+    const totalRuntimeFormat = formatFilmDuration(totalRuntime);
+    totalRuntimeHours = totalRuntimeFormat.slice(0, totalRuntimeFormat.indexOf(`h`, 0));
+    totalRuntimeMinutes = totalRuntimeFormat.slice(totalRuntimeFormat.indexOf(` `, 0), totalRuntimeFormat.indexOf(`m`, 0)).trim();
+  }
 
 
   return (
@@ -157,10 +157,12 @@ const createStatisticsTemplate = (movies, userRank) => {
 };
 
 class Statistics extends AbstractSmartComponent {
-  constructor(movies, userRank) {
+  constructor(movies, userRank, topGenre, runtimeItems) {
     super();
     this._movies = movies;
     this._userRank = userRank;
+    this._topGenre = topGenre;
+    this._runtimeItems = runtimeItems;
     this._statsType = StatsType.ALL_TIME;
     this._chart = null;
     this._renderCharts(this._statsType);
@@ -168,12 +170,25 @@ class Statistics extends AbstractSmartComponent {
   }
 
   getTemplate() {
-    return createStatisticsTemplate(this._movies.getMoviesAll(), this._userRank);
+    return createStatisticsTemplate(this._movies.getWatchedMovies(), this._userRank, this._topGenre, this._runtimeItems);
+  }
+
+  recoveryListeners() {
+    this._setFilterChangeHandler();
+  }
+
+  show() {
+    super.show();
+
+    this.rerender();
   }
 
   rerender() {
+    this._runtimeItems = this._movies.getWatchedMovies().length > 0 ? this._movies.getWatchedMovies().map((movie) => movie.runtime) : null;
+    this._userRank = getUserRankTitle(this._movies.getWatchedMovies());
+    this._topGenre = this._movies.getWatchedMovies().length > 0 ? getTopGenre(this._movies.getWatchedMovies()) : `-`;
     super.rerender();
-
+    this._statsType = StatsType.ALL_TIME;
     this._renderCharts(this._statsType);
   }
 
@@ -187,7 +202,6 @@ class Statistics extends AbstractSmartComponent {
   _renderCharts(statsType) {
     const element = this.getElement();
     const statisticCtx = element.querySelector(`.statistic__chart`);
-
     this._resetCharts();
     this._chart = renderChart(statisticCtx, this._getMoviesByStatsType(statsType));
   }
@@ -205,19 +219,19 @@ class Statistics extends AbstractSmartComponent {
 
     switch (statsType) {
       case StatsType.ALL_TIME:
-        movies = this._movies.getMoviesAll();
+        movies = this._movies.getWatchedMovies();
         break;
       case StatsType.TODAY:
-        movies = getTodayMovies(this._movies.getMoviesAll());
+        movies = getTodayMovies(this._movies.getWatchedMovies());
         break;
       case StatsType.WEEK:
-        movies = getWeekMovies(this._movies.getMoviesAll());
+        movies = getWeekMovies(this._movies.getWatchedMovies());
         break;
       case StatsType.Month:
-        movies = getMonthMovies(this._movies.getMoviesAll());
+        movies = getMonthMovies(this._movies.getWatchedMovies());
         break;
       case StatsType.YEAR:
-        movies = getYearsMovies(this._movies.getMoviesAll());
+        movies = getYearsMovies(this._movies.getWatchedMovies());
         break;
     }
 
