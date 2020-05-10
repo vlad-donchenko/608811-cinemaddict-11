@@ -1,12 +1,5 @@
 import AbstractSmartComponent from "./abstract-smart-component";
-import {
-  getTodayMovies,
-  getWeekMovies,
-  getMonthMovies,
-  getYearsMovies,
-  getTopGenre,
-  getUniqueGenresInfo
-} from "../utils/statistics";
+import {getTodayMovies, getWeekMovies, getMonthMovies, getYearsMovies, getTopGenre, getUniqueGenresInfo} from "../utils/statistics";
 import {formatFilmDuration, getUserRankTitle} from "../utils/common";
 import Chart from "chart.js";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
