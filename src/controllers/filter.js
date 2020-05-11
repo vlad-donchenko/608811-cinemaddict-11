@@ -1,5 +1,5 @@
 import {FilterType} from "../const";
-import MenuComponent from "../components/filter";
+import FilterComponent from "../components/filter";
 import {getMoviesByFilter} from "../utils/filter";
 import {RenderPosition, replace, render} from "../utils/render";
 
@@ -27,13 +27,13 @@ class FilterController {
     });
 
     const oldFilterComponent = this._filterComponent;
-    this._filterComponent = new MenuComponent(filters);
+    this._filterComponent = new FilterComponent(filters);
     this._filterComponent.setFilterChangeHandler(this._onFilterChange);
 
     if (oldFilterComponent) {
       replace(this._filterComponent, oldFilterComponent);
     } else {
-      render(container, this._filterComponent, RenderPosition.BEFORE_END);
+      render(container, this._filterComponent, RenderPosition.AFTER_BEGIN);
     }
   }
 

@@ -87,6 +87,15 @@ class PageController {
     this._renderMostCommentedFilms();
   }
 
+  hide() {
+    this._movieMainComponent.hide();
+  }
+
+  show() {
+    this._movieMainComponent.show();
+  }
+
+
   _removeMovies() {
     this._showedMovieControllers.forEach((showedMovieController) => showedMovieController.destroy());
     this._showedMovieControllers = [];
@@ -153,6 +162,7 @@ class PageController {
 
   _onDataChange(movieController, oldData, newData) {
     const isSuccess = this._moviesModel.updateMovie(oldData.id, newData);
+
     if (isSuccess) {
       movieController.render(newData);
     }

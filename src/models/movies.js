@@ -14,6 +14,14 @@ class Movies {
     return this._movies;
   }
 
+  getWatchedMovies() {
+    const movies = this.getMoviesAll();
+
+    return movies.filter((movie) => {
+      return movie.alreadyWatched;
+    });
+  }
+
   getMovies() {
     return getMoviesByFilter(this._activeFilterType, this._movies);
   }
