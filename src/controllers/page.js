@@ -162,6 +162,7 @@ class PageController {
 
   _onDataChange(movieController, oldData, newData) {
     const isSuccess = this._moviesModel.updateMovie(oldData.id, newData);
+
     if (isSuccess) {
       movieController.render(newData);
     }
