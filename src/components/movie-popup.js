@@ -1,12 +1,10 @@
 import AbstractSmartComponent from "./abstract-smart-component";
 import {
-  getCurrentComment,
   convertsArrayToString,
   formatFilmDuration,
   formatReleaseDate,
   formatCommentDate,
 } from "../utils/common";
-import {comments} from "../mock/comment";
 
 const createGenreMarkUp = (genres) => {
   return genres.map((genre) => {
@@ -23,7 +21,7 @@ const createCommentMarkUp = (commentItems) => {
     return (
       `<li class="film-details__comment" id="${id}">
         <span class="film-details__comment-emoji">
-          <img src="./images/emoji/${emotion}" width="55" height="55" alt="emoji">
+          <img src="./images/emoji/${emotion}.png" width="55" height="55" alt="emoji">
         </span>
         <div>
           <p class="film-details__comment-text">${comment}</p>
@@ -39,12 +37,11 @@ const createCommentMarkUp = (commentItems) => {
 };
 
 const createFilmPopupTemplate = (movie, commentEmoji) => {
-  const {title, poster, rating, description, comments: commentsId, ageRating, director, writers, actors, genre, releaseCountry, releaseDate, runtime, watchlist, favorite, alreadyWatched} = movie;
+  const {title, poster, rating, description, ageRating, comments, director, writers, actors, genre, releaseCountry, releaseDate, alternativeTitle, runtime, watchlist, favorite, alreadyWatched} = movie;
 
   const duration = formatFilmDuration(runtime);
-
-  const currentComments = getCurrentComment(commentsId, comments);
-  const commentMarkUp = createCommentMarkUp(currentComments);
+  const commentMarkUp = comments ? createCommentMarkUp(comments) : ``;
+  const commentsCount = comments.length;
 
   const directorsTitle = convertsArrayToString(director, `, `);
   const writersTitle = convertsArrayToString(writers, `, `);
@@ -69,7 +66,7 @@ const createFilmPopupTemplate = (movie, commentEmoji) => {
           </div>
           <div class="film-details__info-wrap">
             <div class="film-details__poster">
-              <img class="film-details__poster-img" src="./images/posters/${poster}" alt="${title}">
+              <img class="film-details__poster-img" src="${poster}" alt="${title}">
 
               <p class="film-details__age">${ageRating}+</p>
             </div>
@@ -78,7 +75,7 @@ const createFilmPopupTemplate = (movie, commentEmoji) => {
               <div class="film-details__info-head">
                 <div class="film-details__title-wrap">
                   <h3 class="film-details__title">${title}</h3>
-                  <p class="film-details__title-original">${title}</p>
+                  <p class="film-details__title-original">${alternativeTitle}</p>
                 </div>
 
                 <div class="film-details__rating">
@@ -139,7 +136,7 @@ const createFilmPopupTemplate = (movie, commentEmoji) => {
 
         <div class="form-details__bottom-container">
           <section class="film-details__comments-wrap">
-            <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${currentComments.length}</span></h3>
+            <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${commentsCount}</span></h3>
 
             <ul class="film-details__comments-list">
               ${commentMarkUp}

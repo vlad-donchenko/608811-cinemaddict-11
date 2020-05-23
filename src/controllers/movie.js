@@ -1,4 +1,5 @@
 import {RenderPosition, remove, render, replace} from "../utils/render";
+import MovieModel from "../models/movie";
 import MovieComponent from "../components/movie";
 import MoviePopupComponent from "../components/movie-popup";
 
@@ -44,8 +45,6 @@ class MovieController {
 
   destroy() {
     remove(this._movieComponent);
-    remove(this._moviePopupComponent);
-    document.removeEventListener(`keydown`, this._onClosePopupCloseKeyPress);
   }
 
   setDefaultView() {
@@ -111,27 +110,33 @@ class MovieController {
   }
 
   _addWatchListHandler() {
-    this._onDataChange(this, this._movie, Object.assign({}, this._movie, {
-      watchlist: !this._movie.watchlist
-    }));
+    const newMove = MovieModel.clone(this._movie);
+    newMove.watchlist = !newMove.watchlist;
+    this._onDataChange(this, this._movie, newMove);
   }
 
   _addWatchedHandler() {
-    this._onDataChange(this, this._movie, Object.assign({}, this._movie, {
-      alreadyWatched: !this._movie.alreadyWatched
-    }));
+    const newMove = MovieModel.clone(this._movie);
+    newMove.alreadyWatched = !newMove.alreadyWatched;
+    this._onDataChange(this, this._movie, newMove);
   }
 
   _addFavoriteHandler() {
-    this._onDataChange(this, this._movie, Object.assign({}, this._movie, {
-      favorite: !this._movie.favorite
-    }));
+    const newMove = MovieModel.clone(this._movie);
+    newMove.favorite = !newMove.favorite;
+    this._onDataChange(this, this._movie, newMove);
   }
 
   _onOpenPopupClick() {
+    if (this._mode === Mode.POPUP) {
+      return;
+    }
+
+    this._onViewChange();
+
     this._moviePopupComponent = this._getMoviePopup(this._movie);
     render(this._bodyElement, this._moviePopupComponent, RenderPosition.BEFORE_END);
-    this._onViewChange();
+
     document.addEventListener(`keydown`, this._onClosePopupCloseKeyPress);
     this._mode = Mode.POPUP;
   }

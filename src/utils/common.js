@@ -40,6 +40,12 @@ const getCurrentComment = (commentsId, comments) => {
   return currentComment;
 };
 
+const getCommentsId = (movies) => {
+  return movies.slice().map((movie) => {
+    return movie.comments;
+  });
+};
+
 const formatFilmDuration = (filmDuration) => {
   return moment.duration(filmDuration, `minutes`).format(`h[h] m[m]`);
 };
@@ -57,6 +63,10 @@ const formatCommentDate = (date) => {
 };
 
 const convertsArrayToString = (array, separator) => {
+  if (!array) {
+    return ``;
+  }
+
   return array.length > 0 ? array.join(separator) : array[0];
 };
 
@@ -87,4 +97,5 @@ export {
   formatCommentDate,
   getUserRankTitle,
   formatReleaseYear,
+  getCommentsId
 };

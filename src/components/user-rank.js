@@ -1,5 +1,4 @@
 import AbstractComponent from "./abstract-component";
-import {getUserRankTitle} from "../utils/common";
 
 const createUserRankTemplate = (rank) => {
   return (
