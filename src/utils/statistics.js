@@ -55,7 +55,7 @@ const getTodayMovies = (movies) => {
   const targetDate = moment().format(`YYYY-MM-DD`);
 
   return movies.slice().filter((movie) => {
-    const watchedDateFormat = moment(movie.userDetails.watchingDate).format(`YYYY-MM-DD`);
+    const watchedDateFormat = moment(movie.watchingDate).format(`YYYY-MM-DD`);
     return moment(targetDate).isSame(watchedDateFormat);
   });
 };
@@ -65,7 +65,7 @@ const getWeekMovies = (movies) => {
   const sevenDaysAgo = moment(new Date()).subtract(7, `days`).format(`YYYY-MM-DD`);
 
   return movies.slice().filter((movie) => {
-    const watchedDateFormat = moment(movie.userDetails.watchingDate).format(`YYYY-MM-DD`);
+    const watchedDateFormat = moment(movie.watchingDate).format(`YYYY-MM-DD`);
     return moment(sevenDaysAgo).isSameOrBefore(watchedDateFormat) && moment(dateNow).isSameOrAfter(watchedDateFormat);
   });
 };
@@ -75,7 +75,7 @@ const getMonthMovies = (movies) => {
   const monthAgo = moment(new Date()).subtract(1, `months`).format(`YYYY-MM-DD`);
 
   return movies.slice().filter((movie) => {
-    const watchedDateFormat = moment(movie.userDetails.watchingDate).format(`YYYY-MM-DD`);
+    const watchedDateFormat = moment(movie.watchingDate).format(`YYYY-MM-DD`);
     return moment(monthAgo).isSameOrBefore(watchedDateFormat) && moment(dateNow).isSameOrAfter(watchedDateFormat);
   });
 };
@@ -85,7 +85,7 @@ const getYearsMovies = (movies) => {
   const yearsAgo = moment(new Date()).subtract(1, `year`).format(`YYYY-MM-DD`);
 
   return movies.slice().filter((movie) => {
-    const watchedDateFormat = moment(movie.userDetails.watchingDate).format(`YYYY-MM-DD`);
+    const watchedDateFormat = moment(movie.watchingDate).format(`YYYY-MM-DD`);
     return moment(yearsAgo).isSameOrBefore(watchedDateFormat) && moment(dateNow).isSameOrAfter(yearsAgo);
   });
 };

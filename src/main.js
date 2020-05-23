@@ -1,4 +1,6 @@
-import {MOVIE_COUNT, MenuItem} from "./const";
+import {MenuItem} from "./const";
+import Api from "./api/api";
+import MovieListPreloaderComponent from "./components/movie-list-preloader";
 import UserRankComponent from "./components/user-rank";
 import StatisticsComponent from "./components/statistics";
 import FooterStatisticsComponent from "./components/footer-statistics";
@@ -6,14 +8,15 @@ import PageController from "./controllers/page";
 import MenuComponent from "./components/menu";
 import FilterController from "./controllers/filter";
 import MoviesModel from "./models/movies";
-import {getMovies} from "./mock/movie";
-import {RenderPosition, render} from "./utils/render";
+import {RenderPosition, render, remove} from "./utils/render";
 import {getUserRankTitle} from "./utils/common";
 import {getTopGenre} from "./utils/statistics";
 
-const movies = getMovies(MOVIE_COUNT);
+const AUTHORIZATION = `Basic er883jdIbzQ`;
+const END_POINT = `https://11.ecmascript.pages.academy/cinemaddict`;
+const api = new Api(END_POINT, AUTHORIZATION);
+
 const moviesModel = new MoviesModel();
-moviesModel.setMovies(movies);
 
 const headerElement = document.querySelector(`.header`);
 const userRank = getUserRankTitle(moviesModel.getWatchedMovies());
@@ -29,8 +32,7 @@ const filterContainerElement = menuComponent.getElement();
 const filterController = new FilterController(filterContainerElement, moviesModel);
 filterController.render();
 
-const pageController = new PageController(mainElement, moviesModel);
-pageController.render();
+const pageController = new PageController(mainElement, moviesModel, api);
 
 const topGenre = moviesModel.getWatchedMovies().length > 0 ? getTopGenre(moviesModel.getWatchedMovies()) : `-`;
 const runtimeItems = moviesModel.getWatchedMovies().length > 0 ? moviesModel.getWatchedMovies().map((movie) => movie.runtime) : null;
@@ -39,7 +41,12 @@ render(mainElement, statisticsComponent, RenderPosition.BEFORE_END);
 statisticsComponent.hide();
 
 const footerElement = document.querySelector(`.footer`);
-render(footerElement, new FooterStatisticsComponent(movies.length), RenderPosition.BEFORE_END);
+const footerStatisticsComponent = new FooterStatisticsComponent(0);
+render(footerElement, footerStatisticsComponent, RenderPosition.BEFORE_END);
+
+const movieListPreloaderComponent = new MovieListPreloaderComponent();
+render(mainElement, movieListPreloaderComponent, RenderPosition.BEFORE_END);
+
 
 menuComponent.setMenuChangeHandler((menuItem) => {
   switch (menuItem) {
@@ -56,3 +63,12 @@ menuComponent.setMenuChangeHandler((menuItem) => {
       break;
   }
 });
+
+
+api.getMovies()
+  .then((movies) => {
+    moviesModel.setMovies(movies);
+    remove(movieListPreloaderComponent);
+    pageController.render();
+    filterController.render();
+  });

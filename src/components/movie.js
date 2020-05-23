@@ -3,11 +3,13 @@ import AbstractComponent from "./abstract-component";
 import {getCommentTitles, formatFilmDuration, formatReleaseYear} from "../utils/common";
 
 const createMovieTemplate = (movie) => {
-  const {title, poster, description, rating, comments, genre, runtime, watchlist, favorite, alreadyWatched, releaseDate} = movie;
+  const {title, poster, description, comments, rating, genre, runtime, watchlist, favorite, alreadyWatched, releaseDate} = movie;
 
+  const genreTitle = genre.length > 0 ? genre[0] : `Unknown`;
   const releaseDateYear = formatReleaseYear(releaseDate);
+  const commentsCount = comments ? comments.length : 0;
+  const commentTitle = getCommentTitles(commentsCount);
 
-  const commentTitle = getCommentTitles(comments.length);
   const duration = formatFilmDuration(runtime);
 
   const alreadyWatchListClass = watchlist ? `film-card__controls-item--active` : ``;
@@ -21,11 +23,11 @@ const createMovieTemplate = (movie) => {
         <p class="film-card__info">
           <span class="film-card__year">${releaseDateYear}</span>
           <span class="film-card__duration">${duration}</span>
-          <span class="film-card__genre">${genre[0]}</span>
+          <span class="film-card__genre">${genreTitle}</span>
         </p>
-        <img src="./images/posters/${poster}" alt="${title}" class="film-card__poster">
+        <img src="${poster}" alt="${title}" class="film-card__poster">
         <p class="film-card__description">${description.slice(0, MAX_MOVIE_CARD_DESCRIPTION_LENGTH)}</p>
-        <a class="film-card__comments">${comments.length} ${commentTitle}</a>
+        <a class="film-card__comments">${commentsCount} ${commentTitle}</a>
         <form class="film-card__controls">
           <button type="button" class="film-card__controls-item button film-card__controls-item--add-to-watchlist ${alreadyWatchListClass}">Add to watchlist</button>
           <button type="button" class="film-card__controls-item button film-card__controls-item--mark-as-watched ${alreadyWatchedClass}">Mark as watched</button>

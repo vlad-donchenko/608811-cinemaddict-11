@@ -41,7 +41,8 @@ const getSortedMovies = (sortType, movies, from, to) => {
 };
 
 class PageController {
-  constructor(container, moviesModel) {
+  constructor(container, moviesModel, api) {
+    this.api = api;
     this._container = container;
     this._moviesModel = moviesModel;
     this._showedMovieControllers = [];
@@ -54,7 +55,7 @@ class PageController {
     this._sortComponent = new SortComponent();
     this._onSortTypeChange = this._onSortTypeChange.bind(this);
     this._onDataChange = this._onDataChange.bind(this);
-    this._onViewChange = this.onViewChange.bind(this);
+    this._onViewChange = this._onViewChange.bind(this);
     this._sortComponent.setSortTypeChangeHandler(this._onSortTypeChange);
     this._onShowMoreButtonClick = this._onShowMoreButtonClick.bind(this);
     this._onFilterChange = this._onFilterChange.bind(this);
@@ -122,7 +123,6 @@ class PageController {
 
   _renderMostCommentedFilms() {
     const movies = this._moviesModel.getMostCommentedMovies();
-
     const container = this._createNewExtraContainer(ExtraMovieTitle.MOST_COMMENTED);
 
     if (movies[0].comments.length !== 0) {
@@ -132,7 +132,6 @@ class PageController {
 
   _renderTopRatedFilms() {
     const movies = this._moviesModel.getTopRatedMovies();
-
     const container = this._createNewExtraContainer(ExtraMovieTitle.TOP_RATED);
 
     if (movies[0].comments.length !== 0) {
@@ -161,11 +160,14 @@ class PageController {
   }
 
   _onDataChange(movieController, oldData, newData) {
-    const isSuccess = this._moviesModel.updateMovie(oldData.id, newData);
-
-    if (isSuccess) {
-      movieController.render(newData);
-    }
+    this.api.updateMovie(oldData.id, newData)
+      .then((movieModel) => {
+        const isSuccess = this._moviesModel.updateMovie(oldData.id, newData);
+        if (isSuccess) {
+          movieController.render(movieModel);
+          this._updateMovies(this._showMovieCount);
+        }
+      });
   }
 
   _renderShowMoreButton() {
@@ -194,7 +196,7 @@ class PageController {
     }
   }
 
-  onViewChange() {
+  _onViewChange() {
     this._showedMovieControllers.forEach((movie) => movie.setDefaultView());
   }
 
