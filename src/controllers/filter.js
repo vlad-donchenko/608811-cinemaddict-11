@@ -9,6 +9,7 @@ class FilterController {
     this._moviesModel = moviesModel;
     this._activeFilterType = FilterType.ALL_MOVIES;
     this._filterComponent = null;
+    this._showScreenHandler = null;
     this._onFilterChange = this._onFilterChange.bind(this);
     this._onDataChange = this._onDataChange.bind(this);
     this._moviesModel.setDataChangeHandler(this._onDataChange);
@@ -40,10 +41,15 @@ class FilterController {
   _onFilterChange(filterType) {
     this._moviesModel.setFilter(filterType);
     this._activeFilterType = filterType;
+    this._showScreenHandler(filterType);
   }
 
   _onDataChange() {
     this.render();
+  }
+
+  setScreen(handler) {
+    this._showScreenHandler = handler;
   }
 }
 

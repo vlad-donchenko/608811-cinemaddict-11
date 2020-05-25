@@ -9,7 +9,7 @@ const creteFilterMarkup = (menuItem, activeMenuItem) => {
   const navigationCountMarkup = count !== null ? `<span class="main-navigation__item-count">${count}</span>` : ``;
 
   return (
-    `<a href="#${linkHref}" class="main-navigation__item ${activeFilterClass}" data-filter="${title}" id="${title}">
+    `<a href="#${linkHref}" class="main-navigation__item ${activeFilterClass}" data-action="${title}">
         ${title}
         ${navigationCountMarkup}
     </a>`
@@ -22,9 +22,12 @@ const createMenuTemplate = (menu) => {
   }).join(`\n`);
 
   return (
-    `<div class="main-navigation__items">
-       ${menuMarkup}
-    </div>`
+    `<nav class="main-navigation">
+        <div class="main-navigation__items">
+           ${menuMarkup}
+        </div>
+        <a href="#stats" class="main-navigation__additional" data-action="Stats">Stats</a>
+    </nav>`
   );
 };
 
@@ -40,8 +43,8 @@ class Filter extends AbstractComponent {
   }
 
   _setActiveItem(active) {
-    const items = this.getElement().querySelectorAll(`.main-navigation__item`);
-    const itemActive = this.getElement().querySelector(`.main-navigation__item[data-filter="${active}"]`);
+    const items = this.getElement().querySelectorAll(`a`);
+    const itemActive = this.getElement().querySelector(`a[data-action="${active}"]`);
 
     items.forEach((item) => {
       item.classList.remove(`main-navigation__item--active`);
@@ -59,7 +62,7 @@ class Filter extends AbstractComponent {
         return;
       }
 
-      const filterName = target.dataset.filter;
+      const filterName = target.dataset.action;
 
       if (this._activeFilterType === filterName) {
         return;

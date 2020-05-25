@@ -1,4 +1,4 @@
-import {EXTRA_MOVIE_COUNT} from "../const";
+import {EXTRA_MOVIE_COUNT, MAX_MOVIE_CARD_DESCRIPTION_LENGTH} from "../const";
 import moment from "moment";
 import "moment-duration-format";
 
@@ -20,7 +20,7 @@ const randomInteger = (min, max) => {
 };
 
 const getCommentTitles = (commentsCount) => {
-  return commentsCount > 1 ? `comment` : `comments`;
+  return commentsCount > 1 ? `comments` : `comment`;
 };
 
 const formatFilmDuration = (filmDuration) => {
@@ -61,8 +61,20 @@ const getUserRankTitle = (watchedMovies) => {
   return rankTitle;
 };
 
+const getDescription = (description) => {
+  let editedDescription = description;
+  const descriptionLength = editedDescription.length;
+
+  if (descriptionLength > MAX_MOVIE_CARD_DESCRIPTION_LENGTH) {
+    editedDescription = editedDescription.slice(0, MAX_MOVIE_CARD_DESCRIPTION_LENGTH - 1).concat(`...`);
+  }
+
+  return editedDescription;
+};
+
 export {
   getTopRatingMovies,
+  getDescription,
   randomInteger,
   getCommentTitles,
   formatFilmDuration,

@@ -6,7 +6,6 @@ import UserRankComponent from "./components/user-rank";
 import StatisticsComponent from "./components/statistics";
 import FooterStatisticsComponent from "./components/footer-statistics";
 import PageController from "./controllers/page";
-import MenuComponent from "./components/menu";
 import FilterController from "./controllers/filter";
 import MoviesModel from "./models/movies";
 import {RenderPosition, render, remove} from "./utils/render";
@@ -20,17 +19,13 @@ const api = new Api(END_POINT, AUTHORIZATION);
 const moviesModel = new MoviesModel();
 
 const headerElement = document.querySelector(`.header`);
-const userRank = getUserRankTitle(moviesModel.getWatchedMovies());
-render(headerElement, new UserRankComponent(userRank), RenderPosition.BEFORE_END);
+let userRank = getUserRankTitle(moviesModel.getWatchedMovies());
+const userRankComponent = new UserRankComponent(userRank);
+render(headerElement, userRankComponent, RenderPosition.BEFORE_END);
 
 const mainElement = document.querySelector(`.main`);
 
-const menuComponent = new MenuComponent();
-render(mainElement, menuComponent, RenderPosition.BEFORE_END);
-
-const filterContainerElement = menuComponent.getElement();
-
-const filterController = new FilterController(filterContainerElement, moviesModel);
+const filterController = new FilterController(mainElement, moviesModel);
 filterController.render();
 
 const sortComponent = new SortComponent();
@@ -52,7 +47,7 @@ const movieListPreloaderComponent = new MovieListPreloaderComponent();
 render(mainElement, movieListPreloaderComponent, RenderPosition.BEFORE_END);
 
 
-menuComponent.setMenuChangeHandler((menuItem) => {
+filterController.setScreen((menuItem) => {
   switch (menuItem) {
     case MenuItem.ALL_MOVIES:
     case MenuItem.FAVORITES:
@@ -72,6 +67,9 @@ menuComponent.setMenuChangeHandler((menuItem) => {
 api.getMovies()
   .then((movies) => {
     moviesModel.setMovies(movies);
+    userRank = getUserRankTitle(moviesModel.getWatchedMovies());
+    remove(userRankComponent);
+    render(headerElement, new UserRankComponent(userRank), RenderPosition.BEFORE_END);
     remove(movieListPreloaderComponent);
     pageController.render();
     filterController.render();

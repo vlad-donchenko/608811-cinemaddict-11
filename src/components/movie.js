@@ -1,6 +1,5 @@
-import {MAX_MOVIE_CARD_DESCRIPTION_LENGTH} from "../const";
 import AbstractComponent from "./abstract-component";
-import {getCommentTitles, formatFilmDuration, formatReleaseYear} from "../utils/common";
+import {getCommentTitles, getDescription, formatFilmDuration, formatReleaseYear} from "../utils/common";
 
 const createMovieTemplate = (movie) => {
   const {title, poster, description, comments, rating, genre, runtime, watchlist, favorite, alreadyWatched, releaseDate} = movie;
@@ -26,7 +25,7 @@ const createMovieTemplate = (movie) => {
           <span class="film-card__genre">${genreTitle}</span>
         </p>
         <img src="${poster}" alt="${title}" class="film-card__poster">
-        <p class="film-card__description">${description.slice(0, MAX_MOVIE_CARD_DESCRIPTION_LENGTH)}</p>
+        <p class="film-card__description">${getDescription(description)}</p>
         <a class="film-card__comments">${commentsCount} ${commentTitle}</a>
         <form class="film-card__controls">
           <button type="button" class="film-card__controls-item button film-card__controls-item--add-to-watchlist ${alreadyWatchListClass}">Add to watchlist</button>
