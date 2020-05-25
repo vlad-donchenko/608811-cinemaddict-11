@@ -39,12 +39,15 @@ class Filter extends AbstractComponent {
     return createMenuTemplate(this._menu);
   }
 
-  _setActiveItem(filterItemNew, filterItemOld) {
-    const itemNew = this.getElement().querySelector(`.main-navigation__item[data-filter="${filterItemNew}"]`);
-    const itemOld = this.getElement().querySelector(`.main-navigation__item[data-filter="${filterItemOld}"]`);
+  _setActiveItem(active) {
+    const items = this.getElement().querySelectorAll(`.main-navigation__item`);
+    const itemActive = this.getElement().querySelector(`.main-navigation__item[data-filter="${active}"]`);
 
-    itemNew.classList.add(`main-navigation__item--active`);
-    itemOld.classList.remove(`main-navigation__item--active`);
+    items.forEach((item) => {
+      item.classList.remove(`main-navigation__item--active`);
+    });
+
+    itemActive.classList.add(`main-navigation__item--active`);
   }
 
   setFilterChangeHandler(handler) {
@@ -62,7 +65,7 @@ class Filter extends AbstractComponent {
         return;
       }
 
-      this._setActiveItem(filterName, this._activeFilterType);
+      this._setActiveItem(filterName);
 
       this._activeFilterType = filterName;
       handler(this._activeFilterType);
