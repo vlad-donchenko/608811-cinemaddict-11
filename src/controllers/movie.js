@@ -1,3 +1,5 @@
+import {MIN_COMMENT_ID, MAX_COMMENT_ID, SHAKE_ANIMATION_TIMEOUT, KeyName, ButtonDeleteName} from "../const";
+import {randomInteger} from "../utils/common";
 import {RenderPosition, remove, render, replace} from "../utils/render";
 import MovieModel from "../models/movie";
 import MovieComponent from "../components/movie";
@@ -17,6 +19,7 @@ class MovieController {
     this._onViewChange = onViewChange;
     this._moviePopupComponent = null;
     this._movieComponent = null;
+    this._deleteCommentId = null;
     this._bodyElement = document.querySelector(`body`);
     this._closePopup = this._closePopup.bind(this);
     this._onClosePopupClick = this._onClosePopupClick.bind(this);
@@ -24,6 +27,11 @@ class MovieController {
     this._addWatchListHandler = this._addWatchListHandler.bind(this);
     this._addWatchedHandler = this._addWatchedHandler.bind(this);
     this._addFavoriteHandler = this._addFavoriteHandler.bind(this);
+    this._deleteComment = this._deleteComment.bind(this);
+    this._addNewComment = this._addNewComment.bind(this);
+    this._lockedCommentForm = this._lockedCommentForm.bind(this);
+    this.getDeleteCommentId = this.getDeleteCommentId.bind(this);
+    this.resetAddedComment = this.resetAddedComment.bind(this);
   }
 
   render(movie) {
@@ -41,6 +49,14 @@ class MovieController {
     } else {
       render(this._container, this._movieComponent, RenderPosition.BEFORE_END);
     }
+  }
+
+  _setDeleteCommentId(id) {
+    this._deleteCommentId = id;
+  }
+
+  getDeleteCommentId() {
+    return this._deleteCommentId;
   }
 
   destroy() {
@@ -106,7 +122,38 @@ class MovieController {
       this._addFavoriteHandler();
     });
 
+    moviePopupComponent.setSubmitFormKeyPress((commentText, emoji) => {
+      this._addNewComment(commentText, emoji);
+    });
+
+    moviePopupComponent.setDeleteButtonClick((commentId) => {
+      this._deleteComment(commentId);
+    });
+
     return moviePopupComponent;
+  }
+
+  _addNewComment(commentText, emoji) {
+
+    this._lockedCommentForm();
+
+    this._movie.comments.push({
+      id: randomInteger(MIN_COMMENT_ID, MAX_COMMENT_ID),
+      comment: commentText,
+      emotion: emoji,
+      date: new Date().toISOString(),
+    });
+    this._onDataChange(this, null, this._movie);
+  }
+
+  resetAddedComment() {
+    this._movie.comments.pop();
+  }
+
+  _deleteComment(commentId) {
+    this._setDeleteCommentId(commentId);
+    this._moviePopupComponent.setData(commentId, ButtonDeleteName.DELETING);
+    this._onDataChange(this, this._movie, null);
   }
 
   _addWatchListHandler() {
@@ -146,7 +193,7 @@ class MovieController {
   }
 
   _onClosePopupCloseKeyPress(evt) {
-    const isEsc = evt.key === `Escape` || evt.key === `Esc`;
+    const isEsc = evt.key === KeyName.ESCAPE;
 
     if (isEsc) {
       this._closePopup();
@@ -158,6 +205,18 @@ class MovieController {
     document.removeEventListener(`keydown`, this._onClosePopupCloseKeyPress);
     remove(this._moviePopupComponent);
     this._mode = Mode.DEFAULT;
+  }
+
+  _lockedCommentForm() {
+    this._moviePopupComponent.lockedForm();
+  }
+
+  unLockedCommentForm() {
+    this._moviePopupComponent.unLockedForm();
+  }
+
+  shake() {
+    this._moviePopupComponent.getCommentInputElement().style.animation = `shake ${SHAKE_ANIMATION_TIMEOUT / 1000}s`;
   }
 }
 

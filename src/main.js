@@ -1,11 +1,11 @@
 import {MenuItem} from "./const";
 import Api from "./api/api";
 import MovieListPreloaderComponent from "./components/movie-list-preloader";
+import SortComponent from "./components/sorting";
 import UserRankComponent from "./components/user-rank";
 import StatisticsComponent from "./components/statistics";
 import FooterStatisticsComponent from "./components/footer-statistics";
 import PageController from "./controllers/page";
-import MenuComponent from "./components/menu";
 import FilterController from "./controllers/filter";
 import MoviesModel from "./models/movies";
 import {RenderPosition, render, remove} from "./utils/render";
@@ -19,20 +19,19 @@ const api = new Api(END_POINT, AUTHORIZATION);
 const moviesModel = new MoviesModel();
 
 const headerElement = document.querySelector(`.header`);
-const userRank = getUserRankTitle(moviesModel.getWatchedMovies());
-render(headerElement, new UserRankComponent(userRank), RenderPosition.BEFORE_END);
+let userRank = getUserRankTitle(moviesModel.getWatchedMovies());
+const userRankComponent = new UserRankComponent(userRank);
+render(headerElement, userRankComponent, RenderPosition.BEFORE_END);
 
 const mainElement = document.querySelector(`.main`);
 
-const menuComponent = new MenuComponent();
-render(mainElement, menuComponent, RenderPosition.BEFORE_END);
-
-const filterContainerElement = menuComponent.getElement();
-
-const filterController = new FilterController(filterContainerElement, moviesModel);
+const filterController = new FilterController(mainElement, moviesModel);
 filterController.render();
 
-const pageController = new PageController(mainElement, moviesModel, api);
+const sortComponent = new SortComponent();
+render(mainElement, sortComponent, RenderPosition.BEFORE_END);
+
+const pageController = new PageController(mainElement, moviesModel, api, sortComponent);
 
 const topGenre = moviesModel.getWatchedMovies().length > 0 ? getTopGenre(moviesModel.getWatchedMovies()) : `-`;
 const runtimeItems = moviesModel.getWatchedMovies().length > 0 ? moviesModel.getWatchedMovies().map((movie) => movie.runtime) : null;
@@ -48,7 +47,7 @@ const movieListPreloaderComponent = new MovieListPreloaderComponent();
 render(mainElement, movieListPreloaderComponent, RenderPosition.BEFORE_END);
 
 
-menuComponent.setMenuChangeHandler((menuItem) => {
+filterController.setScreen((menuItem) => {
   switch (menuItem) {
     case MenuItem.ALL_MOVIES:
     case MenuItem.FAVORITES:
@@ -68,7 +67,12 @@ menuComponent.setMenuChangeHandler((menuItem) => {
 api.getMovies()
   .then((movies) => {
     moviesModel.setMovies(movies);
+    userRank = getUserRankTitle(moviesModel.getWatchedMovies());
+    remove(userRankComponent);
+    render(headerElement, new UserRankComponent(userRank), RenderPosition.BEFORE_END);
     remove(movieListPreloaderComponent);
     pageController.render();
     filterController.render();
+    remove(footerStatisticsComponent);
+    render(footerElement, new FooterStatisticsComponent(moviesModel.getMoviesAll().length), RenderPosition.BEFORE_END);
   });

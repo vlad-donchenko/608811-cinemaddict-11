@@ -67,6 +67,28 @@ class Api {
       .then(MovieModel.parseMovie);
   }
 
+  createComment(data) {
+    return this._load({
+      url: `comments/${data.id}`,
+      method: Method.POST,
+      body: JSON.stringify(data.convertCommentToServer()),
+      headers: new Headers({'Content-Type': `application/json`})
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((result) => {
+        this._movie = result.movie;
+        this._movie[`comments`] = result.comments;
+        return this._movie;
+      })
+      .then(MovieModel.parseMovie);
+  }
+
+  deleteComment(id) {
+    return this._load({url: `comments/${id}`, method: Method.DELETE});
+  }
+
   _load({url, method = Method.GET, body = null, headers = new Headers()}) {
     headers.append(`Authorization`, this._authorization);
 

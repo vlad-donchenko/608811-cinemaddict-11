@@ -54,7 +54,7 @@ class Movie {
   convertToServer() {
     return ({
       'id': this.id,
-      'comments': this._convertComments(this.comments),
+      'comments': this._getCommentsId(this.comments),
       'film_info': {
         'title': this.title,
         'alternative_title': this.alternativeTitle,
@@ -81,9 +81,20 @@ class Movie {
     });
   }
 
-  _convertComments(comments) {
+  _getCommentsId(comments) {
     return comments.map((comment) => {
       return comment.id;
+    });
+  }
+
+  convertCommentToServer() {
+    const newComment = this.comments[this.comments.length - 1];
+    const {comment, date, emotion} = newComment;
+
+    return ({
+      comment,
+      date,
+      emotion
     });
   }
 

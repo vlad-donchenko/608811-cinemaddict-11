@@ -1,4 +1,4 @@
-import {EXTRA_MOVIE_COUNT} from "../const";
+import {EXTRA_MOVIE_COUNT, MAX_MOVIE_CARD_DESCRIPTION_LENGTH} from "../const";
 import moment from "moment";
 import "moment-duration-format";
 
@@ -19,31 +19,8 @@ const randomInteger = (min, max) => {
   return Math.round(random);
 };
 
-const getRandomArrayItem = (array) => {
-  const index = randomInteger(0, array.length - 1);
-  return array[index];
-};
-
 const getCommentTitles = (commentsCount) => {
-  return commentsCount > 1 ? `comment` : `comments`;
-};
-
-const getCurrentComment = (commentsId, comments) => {
-  let currentComment = [];
-
-  for (const id of commentsId) {
-    currentComment.push(comments.find((comment) => {
-      return comment.id === id;
-    }));
-  }
-
-  return currentComment;
-};
-
-const getCommentsId = (movies) => {
-  return movies.slice().map((movie) => {
-    return movie.comments;
-  });
+  return commentsCount > 1 ? `comments` : `comment`;
 };
 
 const formatFilmDuration = (filmDuration) => {
@@ -84,18 +61,15 @@ const getUserRankTitle = (watchedMovies) => {
   return rankTitle;
 };
 
-export {
-  getTopRatingMovies,
-  randomInteger,
-  getRandomArrayItem,
-  getCommentTitles,
-  formatFilmDuration,
-  getMostCommentedFilms,
-  convertsArrayToString,
-  getCurrentComment,
-  formatReleaseDate,
-  formatCommentDate,
-  getUserRankTitle,
-  formatReleaseYear,
-  getCommentsId
+const getDescription = (description) => {
+  let editedDescription = description;
+  const descriptionLength = editedDescription.length;
+
+  if (descriptionLength > MAX_MOVIE_CARD_DESCRIPTION_LENGTH) {
+    editedDescription = `${editedDescription.slice(0, MAX_MOVIE_CARD_DESCRIPTION_LENGTH - 1)}...`;
+  }
+
+  return editedDescription;
 };
+
+export {getTopRatingMovies, getDescription, randomInteger, getCommentTitles, formatFilmDuration, getMostCommentedFilms, convertsArrayToString, formatReleaseDate, formatCommentDate, getUserRankTitle, formatReleaseYear};
