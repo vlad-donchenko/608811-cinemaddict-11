@@ -1,4 +1,4 @@
-import {MIN_COMMENT_ID, MAX_COMMENT_ID, SHAKE_ANIMATION_TIMEOUT, ButtonDeleteName} from "../const";
+import {MIN_COMMENT_ID, MAX_COMMENT_ID, SHAKE_ANIMATION_TIMEOUT, KeyName, ButtonDeleteName} from "../const";
 import {randomInteger} from "../utils/common";
 import {RenderPosition, remove, render, replace} from "../utils/render";
 import MovieModel from "../models/movie";
@@ -193,7 +193,7 @@ class MovieController {
   }
 
   _onClosePopupCloseKeyPress(evt) {
-    const isEsc = evt.key === `Escape` || evt.key === `Esc`;
+    const isEsc = evt.key === KeyName.ESCAPE;
 
     if (isEsc) {
       this._closePopup();
@@ -212,7 +212,7 @@ class MovieController {
   }
 
   unLockedCommentForm() {
-    this._moviePopupComponent.unLockedCommentForm();
+    this._moviePopupComponent.unLockedForm();
   }
 
   shake() {

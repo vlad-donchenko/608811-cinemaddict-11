@@ -1,11 +1,6 @@
-import {ButtonDeleteName} from "../const";
+import {KeyName, ButtonDeleteName} from "../const";
 import AbstractSmartComponent from "./abstract-smart-component";
-import {
-  convertsArrayToString,
-  formatFilmDuration,
-  formatReleaseDate,
-  formatCommentDate,
-} from "../utils/common";
+import {convertsArrayToString, formatFilmDuration, formatReleaseDate, formatCommentDate} from "../utils/common";
 import {encode} from "he";
 
 const createGenreMarkUp = (genres) => {
@@ -145,7 +140,7 @@ const createFilmPopupTemplate = (movie, commentEmoji, deleteCommentId, deleteBut
             </ul>
 
             <div class="film-details__new-comment">
-              <div for="add-emoji" class="film-details__add-emoji-label">
+              <div class="film-details__add-emoji-label">
                 <input type="hidden" name="add-emoji" value="${commentEmoji || ``}">
                 ${emojiMarkup}
               </div>
@@ -258,7 +253,7 @@ class MoviePopup extends AbstractSmartComponent {
 
   setSubmitFormKeyPress(handler) {
     this.getCommentInputElement().addEventListener(`keydown`, (evt) => {
-      const isSend = evt.key === `Enter` && evt.ctrlKey || evt.keyCode === `Enter` && evt.metaKey;
+      const isSend = evt.key === KeyName.ENTER && evt.ctrlKey || evt.keyCode === KeyName.ENTER && evt.metaKey;
 
       if (isSend) {
         handler(this._newCommentText, this._commentEmoji);
@@ -286,7 +281,7 @@ class MoviePopup extends AbstractSmartComponent {
     this.getCommentInputElement().setAttribute(`readonly`, `readonly`);
   }
 
-  unlockedForm() {
+  unLockedForm() {
     this.getCommentInputElement().removeAttribute(`readonly`, `readonly`);
   }
 

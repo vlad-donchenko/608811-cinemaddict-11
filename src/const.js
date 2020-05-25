@@ -11,6 +11,11 @@ const ButtonDeleteName = {
   DELETING: `Deleting…`
 };
 
+const KeyName = {
+  ENTER: `Enter`,
+  ESCAPE: `Escape`
+};
+
 const ExtraMovieTitle = {
   TOP_RATED: `Top rated`,
   MOST_COMMENTED: `Most commented`
@@ -31,4 +36,4 @@ const MenuItem = {
   STATS: `Stats`
 };
 
-export {EXTRA_MOVIE_COUNT, SHAKE_ANIMATION_TIMEOUT, MIN_COMMENT_ID, MAX_COMMENT_ID, MOVIE_SHOW_START, MAX_MOVIE_CARD_DESCRIPTION_LENGTH, SHOWING_MOVIE_COUNT_BY_BUTTON, ExtraMovieTitle, FilterType, MenuItem, ButtonDeleteName};
+export {EXTRA_MOVIE_COUNT, SHAKE_ANIMATION_TIMEOUT, MIN_COMMENT_ID, MAX_COMMENT_ID, MOVIE_SHOW_START, MAX_MOVIE_CARD_DESCRIPTION_LENGTH, SHOWING_MOVIE_COUNT_BY_BUTTON, ExtraMovieTitle, FilterType, MenuItem, KeyName, ButtonDeleteName};
