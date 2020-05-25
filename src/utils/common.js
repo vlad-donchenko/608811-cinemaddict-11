@@ -72,16 +72,4 @@ const getDescription = (description) => {
   return editedDescription;
 };
 
-export {
-  getTopRatingMovies,
-  getDescription,
-  randomInteger,
-  getCommentTitles,
-  formatFilmDuration,
-  getMostCommentedFilms,
-  convertsArrayToString,
-  formatReleaseDate,
-  formatCommentDate,
-  getUserRankTitle,
-  formatReleaseYear,
-};
+export {getTopRatingMovies, getDescription, randomInteger, getCommentTitles, formatFilmDuration, getMostCommentedFilms, convertsArrayToString, formatReleaseDate, formatCommentDate, getUserRankTitle, formatReleaseYear};
