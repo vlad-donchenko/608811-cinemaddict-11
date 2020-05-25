@@ -1,6 +1,7 @@
 import {MenuItem} from "./const";
 import Api from "./api/api";
 import MovieListPreloaderComponent from "./components/movie-list-preloader";
+import SortComponent from "./components/sorting";
 import UserRankComponent from "./components/user-rank";
 import StatisticsComponent from "./components/statistics";
 import FooterStatisticsComponent from "./components/footer-statistics";
@@ -32,7 +33,10 @@ const filterContainerElement = menuComponent.getElement();
 const filterController = new FilterController(filterContainerElement, moviesModel);
 filterController.render();
 
-const pageController = new PageController(mainElement, moviesModel, api);
+const sortComponent = new SortComponent();
+render(mainElement, sortComponent, RenderPosition.BEFORE_END);
+
+const pageController = new PageController(mainElement, moviesModel, api, sortComponent);
 
 const topGenre = moviesModel.getWatchedMovies().length > 0 ? getTopGenre(moviesModel.getWatchedMovies()) : `-`;
 const runtimeItems = moviesModel.getWatchedMovies().length > 0 ? moviesModel.getWatchedMovies().map((movie) => movie.runtime) : null;

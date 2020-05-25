@@ -5,7 +5,7 @@ import MovieContainerComponent from "../components/movie-container";
 import NoDataComponent from "../components/no-data";
 import MovieListComponent from "../components/movie-list";
 import ShowMoreButtonComponent from "../components/show-more-button";
-import SortComponent, {SortType} from "../components/sorting";
+import {SortType} from "../components/sorting";
 import MovieMainComponent from "../components/movie-main";
 import MovieController from "./movie";
 
@@ -24,7 +24,7 @@ const getSortedMovies = (sortType, movies, from, to) => {
   switch (sortType) {
     case SortType.SORT_DATE:
       sortedMovies = showingMovies.sort((a, b) => {
-        return b.releaseDate - a.releaseDate;
+        return new Date(b.releaseDate) - new Date(a.releaseDate);
       });
       break;
     case SortType.SORT_RATING:
@@ -41,7 +41,7 @@ const getSortedMovies = (sortType, movies, from, to) => {
 };
 
 class PageController {
-  constructor(container, moviesModel, api) {
+  constructor(container, moviesModel, api, sortComponent) {
     this.api = api;
     this._container = container;
     this._moviesModel = moviesModel;
@@ -54,7 +54,7 @@ class PageController {
     this._movieListComponent = new MovieListComponent();
     this._noDataComponent = new NoDataComponent();
     this._movieMainComponent = new MovieMainComponent();
-    this._sortComponent = new SortComponent();
+    this._sortComponent = sortComponent;
     this._onSortTypeChange = this._onSortTypeChange.bind(this);
     this._onDataChange = this._onDataChange.bind(this);
     this._onViewChange = this._onViewChange.bind(this);
@@ -68,7 +68,6 @@ class PageController {
     const movies = this._moviesModel.getMovies();
     const container = this._container;
 
-    render(container, this._sortComponent, RenderPosition.BEFORE_END);
     render(container, this._movieMainComponent, RenderPosition.BEFORE_END);
 
     const filmsElement = this._movieMainComponent.getElement();
