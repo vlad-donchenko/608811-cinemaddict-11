@@ -1,7 +1,7 @@
 import moment from "moment";
 
 const getUniqueGenres = (movies) => {
-  let genres = [];
+  const genres = [];
 
   movies.slice().forEach((movie) => {
     genres.push(...movie.genre);
@@ -11,7 +11,7 @@ const getUniqueGenres = (movies) => {
 };
 
 const getGenres = (movies) => {
-  let genres = [];
+  const genres = [];
 
   movies.slice().forEach((movie) => {
     genres.push(...movie.genre);
