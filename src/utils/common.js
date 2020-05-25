@@ -66,7 +66,7 @@ const getDescription = (description) => {
   const descriptionLength = editedDescription.length;
 
   if (descriptionLength > MAX_MOVIE_CARD_DESCRIPTION_LENGTH) {
-    editedDescription = editedDescription.slice(0, MAX_MOVIE_CARD_DESCRIPTION_LENGTH - 1).concat(`...`);
+    editedDescription = `${editedDescription.slice(0, MAX_MOVIE_CARD_DESCRIPTION_LENGTH - 1)}...`;
   }
 
   return editedDescription;
