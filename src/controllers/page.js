@@ -68,6 +68,8 @@ class PageController {
     const movies = this._moviesModel.getMovies();
     const container = this._container;
 
+    this._rerenderSortComponent();
+
     render(container, this._movieMainComponent, RenderPosition.BEFORE_END);
 
     const filmsElement = this._movieMainComponent.getElement();
@@ -89,11 +91,19 @@ class PageController {
     this._renderMostCommentedFilms();
   }
 
+  _rerenderSortComponent() {
+    remove(this._sortComponent);
+    render(this._container, this._sortComponent, RenderPosition.BEFORE_END);
+    this._sortComponent.setSortTypeChangeHandler(this._onSortTypeChange);
+  }
+
   hide() {
+    this._sortComponent.hide();
     this._movieMainComponent.hide();
   }
 
   show() {
+    this._sortComponent.show();
     this._movieMainComponent.show();
   }
 

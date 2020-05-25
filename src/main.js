@@ -75,4 +75,6 @@ api.getMovies()
     remove(movieListPreloaderComponent);
     pageController.render();
     filterController.render();
+    remove(footerStatisticsComponent);
+    render(footerElement, new FooterStatisticsComponent(moviesModel.getMoviesAll().length), RenderPosition.BEFORE_END);
   });
