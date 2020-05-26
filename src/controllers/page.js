@@ -1,4 +1,4 @@
-import {ExtraMovieTitle, MOVIE_SHOW_START, SHOWING_MOVIE_COUNT_BY_BUTTON} from "../const";
+import {MovieShowSetting, ExtraMovieTitle} from "../const";
 import {remove, render, RenderPosition} from "../utils/render";
 import FilmExtraComponent from "../components/film-extra";
 import MovieContainerComponent from "../components/movie-container";
@@ -46,7 +46,7 @@ class PageController {
     this._container = container;
     this._moviesModel = moviesModel;
     this._showedMovieControllers = [];
-    this._showMovieCount = MOVIE_SHOW_START;
+    this._showMovieCount = MovieShowSetting.START;
     this._mostCommentedContainer = null;
     this._topReatedContainer = null;
     this._movieContainerComponent = new MovieContainerComponent();
@@ -174,7 +174,7 @@ class PageController {
   }
 
   _onSortTypeChange(sortType) {
-    this._showMovieCount = MOVIE_SHOW_START;
+    this._showMovieCount = MovieShowSetting.START;
 
     const sortedMovies = getSortedMovies(sortType, this._moviesModel.getMovies(), 0, this._showMovieCount);
 
@@ -247,7 +247,7 @@ class PageController {
   _onShowMoreButtonClick() {
     const prevMovieShowCount = this._showMovieCount;
     const movies = this._moviesModel.getMovies();
-    this._showMovieCount = this._showMovieCount + SHOWING_MOVIE_COUNT_BY_BUTTON;
+    this._showMovieCount = this._showMovieCount + MovieShowSetting.BY_BUTTON;
 
     const sortedMovies = getSortedMovies(this._sortComponent.getSortType(), movies, prevMovieShowCount, this._showMovieCount);
     this._renderMovies(sortedMovies);
@@ -263,7 +263,7 @@ class PageController {
 
   _onFilterChange() {
     this._sortComponent.setSortType(SortType.DEFAULT);
-    this._updateMovies(MOVIE_SHOW_START);
+    this._updateMovies(MovieShowSetting.START);
   }
 }
 

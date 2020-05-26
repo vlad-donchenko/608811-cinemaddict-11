@@ -1,17 +1,17 @@
-import {EXTRA_MOVIE_COUNT, MAX_MOVIE_CARD_DESCRIPTION_LENGTH} from "../const";
+import {MAX_MOVIE_CARD_DESCRIPTION_LENGTH, MovieShowSetting} from "../const";
 import moment from "moment";
 import "moment-duration-format";
 
 const getTopRatingMovies = (movies) => {
   return movies.sort((a, b) => {
     return b.rating - a.rating;
-  }).slice(0, EXTRA_MOVIE_COUNT);
+  }).slice(0, MovieShowSetting.EXTRA);
 };
 
 const getMostCommentedFilms = (movies) => {
   return movies.sort((a, b) => {
     return b.comments.length - a.comments.length;
-  }).slice(0, EXTRA_MOVIE_COUNT);
+  }).slice(0, MovieShowSetting.EXTRA);
 };
 
 const randomInteger = (min, max) => {

@@ -1,10 +1,16 @@
-const EXTRA_MOVIE_COUNT = 2;
-const MOVIE_SHOW_START = 5;
-const SHOWING_MOVIE_COUNT_BY_BUTTON = 5;
-const MAX_MOVIE_CARD_DESCRIPTION_LENGTH = 140;
-const MIN_COMMENT_ID = 999;
-const MAX_COMMENT_ID = 9999;
 const SHAKE_ANIMATION_TIMEOUT = 600;
+const MAX_MOVIE_CARD_DESCRIPTION_LENGTH = 140;
+
+const MovieShowSetting = {
+  EXTRA: 2,
+  START: 5,
+  BY_BUTTON: 5
+};
+
+const CommentSetting = {
+  MIN_ID: 999,
+  MAX_ID: 9999,
+};
 
 const ButtonDeleteName = {
   DELETE: `Delete`,
@@ -36,4 +42,4 @@ const MenuItem = {
   STATS: `Stats`
 };
 
-export {EXTRA_MOVIE_COUNT, SHAKE_ANIMATION_TIMEOUT, MIN_COMMENT_ID, MAX_COMMENT_ID, MOVIE_SHOW_START, MAX_MOVIE_CARD_DESCRIPTION_LENGTH, SHOWING_MOVIE_COUNT_BY_BUTTON, ExtraMovieTitle, FilterType, MenuItem, KeyName, ButtonDeleteName};
+export {SHAKE_ANIMATION_TIMEOUT, MAX_MOVIE_CARD_DESCRIPTION_LENGTH, MovieShowSetting, CommentSetting, ExtraMovieTitle, FilterType, MenuItem, KeyName, ButtonDeleteName};

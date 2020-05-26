@@ -1,4 +1,4 @@
-import {MIN_COMMENT_ID, MAX_COMMENT_ID, SHAKE_ANIMATION_TIMEOUT, KeyName, ButtonDeleteName} from "../const";
+import {SHAKE_ANIMATION_TIMEOUT, KeyName, ButtonDeleteName, CommentSetting} from "../const";
 import {randomInteger} from "../utils/common";
 import {RenderPosition, remove, render, replace} from "../utils/render";
 import MovieModel from "../models/movie";
@@ -138,7 +138,7 @@ class MovieController {
     this._lockedCommentForm();
 
     this._movie.comments.push({
-      id: randomInteger(MIN_COMMENT_ID, MAX_COMMENT_ID),
+      id: randomInteger(CommentSetting.MIN_ID, CommentSetting.MAX_ID),
       comment: commentText,
       emotion: emoji,
       date: new Date().toISOString(),
