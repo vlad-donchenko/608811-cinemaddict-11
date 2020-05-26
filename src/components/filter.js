@@ -1,10 +1,10 @@
 import {FilterType} from "../const";
 import AbstractComponent from "./abstract-component";
 
-const creteFilterMarkup = (menuItem, activeMenuItem) => {
-  const {title, count} = menuItem;
+const creteFilterMarkup = (filterItem, activeFilterItem) => {
+  const {title, count} = filterItem;
 
-  const activeFilterClass = activeMenuItem ? `main-navigation__item--active` : ``;
+  const activeFilterClass = activeFilterItem ? `main-navigation__item--active` : ``;
   const linkHref = title.split(` `).join(``).toLowerCase();
   const navigationCountMarkup = count !== null ? `<span class="main-navigation__item-count">${count}</span>` : ``;
 
