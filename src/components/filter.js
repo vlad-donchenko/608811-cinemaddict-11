@@ -16,15 +16,15 @@ const creteFilterMarkup = (menuItem, activeMenuItem) => {
   );
 };
 
-const createMenuTemplate = (menu) => {
-  const menuMarkup = menu.map((menuItem) => {
-    return creteFilterMarkup(menuItem, menuItem.isActive);
+const createFilterTemplate = (filters) => {
+  const filterMarkup = filters.map((filterItem) => {
+    return creteFilterMarkup(filterItem, filterItem.isActive);
   }).join(`\n`);
 
   return (
     `<nav class="main-navigation">
         <div class="main-navigation__items">
-           ${menuMarkup}
+           ${filterMarkup}
         </div>
         <a href="#stats" class="main-navigation__additional" data-action="Stats">Stats</a>
     </nav>`
@@ -32,14 +32,14 @@ const createMenuTemplate = (menu) => {
 };
 
 class Filter extends AbstractComponent {
-  constructor(menu) {
+  constructor(filters) {
     super();
-    this._menu = menu;
+    this._filters = filters;
     this._activeFilterType = FilterType.ALL_MOVIES;
   }
 
   getTemplate() {
-    return createMenuTemplate(this._menu);
+    return createFilterTemplate(this._filters);
   }
 
   _setActiveItem(active) {
